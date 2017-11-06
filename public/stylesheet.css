@@ -1,0 +1,9 @@
+.fakeLink {
+    text-color: blue;
+    text-decoration: underline;
+    font-size: 20px;
+    color: blue;
+}
+.fakeLink:hover {
+    color: purple;
+}
