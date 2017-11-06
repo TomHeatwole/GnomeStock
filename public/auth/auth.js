@@ -9,7 +9,6 @@ var auth = {
             var errorMessage = error.message;
             alert(errorMessage);
         });
-        console.log(firebase.auth().currentUser);
     },
     displayCreateAccount: function() {
         document.getElementById("createAccount").style = "display: lol";
@@ -20,11 +19,16 @@ var auth = {
         document.getElementById("signIn").style = "display: lol";
     },
     createAccount: function() {
-        //TODO: Validations (ESPECIALLY The code)
+        alert("Creating accounts is currently disabled");
+        return;
         firebase.auth().createUserWithEmailAndPassword(
             document.getElementById("newEmail").value, 
             document.getElementById("newPassword").value
-        ).catch(function(error) {
+        ).then(function() {
+            firebase.auth().currentUser.updateProfile({
+                displayName: document.getElementById("name").value
+            });
+        }).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
