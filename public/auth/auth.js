@@ -1,4 +1,3 @@
-$.getScript('gnomestocks.com/app.js');
 var auth = {
     authenticate: function() {
         firebase.auth().signInWithEmailAndPassword(
@@ -30,6 +29,20 @@ var auth = {
             var errorCode = error.code;
             var errorMessage = error.message;
             alert(errorMessage);
+        });
+    },
+    changePassword: function() {
+        var pass1 = document.getElementById("pass1").value;
+        var pass2 = document.getElementById("pass2").value;
+        document.getElementById("success").style = "display: none";
+        if (pass1 != pass2) {
+            alert("The passwords do not match.");
+            return;
+        }
+        firebase.auth().currentUser.updatePassword(pass1).then(function() {
+            document.getElementById("success").style = "display: lol";
+        }).catch(function(e) {
+            alert(e.message);
         });
     }
 };
