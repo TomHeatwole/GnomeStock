@@ -1,6 +1,5 @@
+$.getScript('gnomestocks.com/app.js');
 var auth = {
-    user: firebase.auth().currentUser, 
-    signedIn: !(this.user == null),
     authenticate: function() {
         firebase.auth().signInWithEmailAndPassword(
             document.getElementById("email").value, 
@@ -9,8 +8,9 @@ var auth = {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
-            console.log(errorMessage);
+            alert(errorMessage);
         });
+        console.log(firebase.auth().currentUser);
     },
     displayCreateAccount: function() {
         document.getElementById("createAccount").style = "display: lol";
@@ -26,11 +26,20 @@ var auth = {
             document.getElementById("newEmail").value, 
             document.getElementById("newPassword").value
         ).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            alert(errorMessage);
         });
     }
 };
 
-if (auth.signedIn) document.write("You are signed in :D");
+firebase.auth().onAuthStateChanged(function(u) {
+    if (u) {
+        if (window.location != "https://gnomestocks.com/auth/changepassword.html")
+            window.location = "https://gnomestocks.com/";
+    } else {
+        if (window.location != "https://gnomestocks.com/auth/auth.html")
+            window.location = "https://gnomestocks.com/auth/auth.html";
+    }
+});
