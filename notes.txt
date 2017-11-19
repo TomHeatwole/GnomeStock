@@ -1,0 +1,10 @@
+Example database query:
+
+    var database = firebase.database();
+    database.ref("user/").once('value').then(function(users) {
+        for (var u in users.val()) {
+            database.ref("user/" + u).once('value').then(function(thing) {
+                console.log(thing.val().ticker);
+            });
+        }
+    });

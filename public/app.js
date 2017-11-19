@@ -5,6 +5,7 @@ firebase.auth().onAuthStateChanged(function(u) {
         user = u;
         $("h1").text("Hello, " + u.displayName + "!");
         displayLoadedPage();
+        start(u);
     } else {
         window.location = "https://gnomestocks.com/auth/auth.html";  
     }
@@ -20,5 +21,9 @@ var signOut = function() {
 var displayLoadedPage = function() {
     document.getElementById("loading").style = "display: none";
     document.getElementById("loaded").style = "display: lol";
+}
+
+var start = function(user) {
+
 }
 
