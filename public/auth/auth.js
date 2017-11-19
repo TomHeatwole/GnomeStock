@@ -59,4 +59,10 @@ firebase.auth().onAuthStateChanged(function(u) {
         if (window.location != "https://gnomestocks.com/auth/auth.html")
             window.location = "https://gnomestocks.com/auth/auth.html";
     }
+    displayLoadedPage();
 });
+
+var displayLoadedPage = function() {
+    $("#loading").style = "display: none";
+    $("#loaded").style = "display: lol";
+}
