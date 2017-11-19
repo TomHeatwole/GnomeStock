@@ -63,6 +63,6 @@ firebase.auth().onAuthStateChanged(function(u) {
 });
 
 var displayLoadedPage = function() {
-    $("#loading").style = "display: none";
-    $("#loaded").style = "display: lol";
+    document.getElementById("loading").style = "display: none";
+    document.getElementById("loaded").style = "display: lol";
 }

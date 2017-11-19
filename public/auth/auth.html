@@ -17,7 +17,6 @@
         firebase.initializeApp(config);
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-    <script src="./auth.js"></script>
         <title>
             GnomeStock 
         </title>
@@ -41,11 +40,12 @@
                 Display Name: <input type="text" id="name"></input><br>
                 Desired Password: <input type="password" id="newPassword"></input><br>
                 New User Code: <input type="password" id="newUserCode"></input><br>
-                Stock prefix (ex. $TOM) $<input type="text" id="prefix"></input></br>
+                Stock Ticker (ex. $TOM) $<input type="text" id="prefix"></input></br>
                 <button onclick="auth.createAccount()"> Sign Up </button>
                 <br><br>
                 <p class=fakeLink onclick="auth.displaySignIn()">Return to Sign In</p>
             </div>
         </div>
     </body>
+    <script src="./auth.js"></script>
 </html>
