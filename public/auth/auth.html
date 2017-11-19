@@ -23,24 +23,29 @@
         </title>
     </head>
     <body>
-        <div id="signIn">
-            <h1>GnomeStock sign in</h1>
-            Email: <input type="text" id="email"></input><br>
-            Password: <input type="password" id="password"</input><br>
-            <button onclick="auth.authenticate()"> Sign in </button>
-            <br><br>
-            <p class=fakeLink onclick="auth.displayCreateAccount()">New User Sign up</p>
+        <div id="loading">
+            GnomeStock is loding...
         </div>
-        <div id="createAccount" style = "display: none">
-            <h1>Create Account</h1>
-            Email: <input type="text" id="newEmail"></input><br>
-            Display Name: <input type="text" id="name"></input><br>
-            Desired Password: <input type="password" id="newPassword"></input><br>
-            New User Code: <input type="password" id="newUserCode"></input><br>
-            Stock prefix (ex. $TOM) $<input type="text" id="prefix"></input></br>
-            <button onclick="auth.createAccount()"> Sign Up </button>
-            <br><br>
-            <p class=fakeLink onclick="auth.displaySignIn()">Return to Sign In</p>
+        <div id="loaded" style="display: none">
+            <div id="signIn">
+                <h1>GnomeStock sign in</h1>
+                Email: <input type="text" id="email"></input><br>
+                Password: <input type="password" id="password"</input><br>
+                <button onclick="auth.authenticate()"> Sign in </button>
+                <br><br>
+                <p class=fakeLink onclick="auth.displayCreateAccount()">New User Sign up</p>
+            </div>
+            <div id="createAccount" style = "display: none">
+                <h1>Create Account</h1>
+                Email: <input type="text" id="newEmail"></input><br>
+                Display Name: <input type="text" id="name"></input><br>
+                Desired Password: <input type="password" id="newPassword"></input><br>
+                New User Code: <input type="password" id="newUserCode"></input><br>
+                Stock prefix (ex. $TOM) $<input type="text" id="prefix"></input></br>
+                <button onclick="auth.createAccount()"> Sign Up </button>
+                <br><br>
+                <p class=fakeLink onclick="auth.displaySignIn()">Return to Sign In</p>
+            </div>
         </div>
     </body>
 </html>
