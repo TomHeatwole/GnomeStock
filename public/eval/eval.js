@@ -1,4 +1,7 @@
 var user;
+var userKey;
+var weekIndex;
+var monthIndex;
 
 firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
@@ -9,6 +12,8 @@ firebase.auth().onAuthStateChanged(function(u) {
                 home();
             if (loc.slice(-12) === "monthly.html" && !(master.val().monthly))
                 home();
+            getUserKey();
+            getMasterValues();
             displayLoadedPage();
             start(u);
         });
@@ -17,6 +22,25 @@ firebase.auth().onAuthStateChanged(function(u) {
     }
 });
 
+var getUserKey = function() {
+    firebase.database().ref("user/").once('value').then(function(users) {
+        for (u in users.val()) {
+            (function(u) {
+                firebase.database().ref("user/" + u).once("value").then(function(usr){
+                    if (usr.val().email === firebase.auth().currentUser.email)
+                        userKey = u;
+                });
+            }(u));
+        }
+    });
+}
+
+var getMasterValues = function() {
+    firebase.database().ref("master").once("value").then(function(master) {
+        weekIndex = master.val().week;
+        monthIndex = master.val().month;
+    });
+}       
 
 var signOut = function() {
     firebase.auth().signOut().catch(function(e) {
@@ -40,15 +64,9 @@ var home = function() {
 var submitWeekly = function() {
     var rating = document.getElementById("rating").value;
     if (!isNaN(parseFloat(rating)) && isFinite(rating) && rating >= 0 && rating <= 100) {
-        firebase.database().ref("user/").once('value').then(function(users) {
-            for (u in users.val()) {
-                (function(u) {
-                    firebase.database().ref("user/" + u).once("value").then(function(usr){
-                        if (usr.val().email === firebase.auth().currentUser.email)
-                            console.log(u);
-                    });
-                }(u));
-            }
+        firebase.database().ref("user/" + userKey + "/weekly").push({
+            "week" : weekIndex,
+            "rating" : rating
         });
     } else
         document.getElementById("error").style = "display: lol";
