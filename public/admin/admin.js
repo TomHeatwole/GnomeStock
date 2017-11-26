@@ -29,3 +29,6 @@ var start = function(user) {
 
 }
 
+var home = function() {
+    window.location = "https://gnomestocks.com/auth/auth.html";
+}
