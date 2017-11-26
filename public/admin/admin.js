@@ -32,3 +32,14 @@ var start = function(user) {
 var home = function() {
     window.location = "https://gnomestocks.com/auth/auth.html";
 }
+
+var submit = function() {
+    var perms = document.getElementsByTagName("input"); // weekly, monthly, trading
+    firebase.database().ref().update({
+        "/master/weekly" : perms[0].checked,
+        "/master/monthly" : perms[1].checked,
+        "/master/market-open" : perms[2].checked
+    }).then(function() {
+        document.getElementById("successMessage").style = "display: lol";
+    });
+}

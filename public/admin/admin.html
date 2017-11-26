@@ -27,7 +27,14 @@
         </div>
         <div id="loaded" style="display: none">
             Admin Dashboard
-            <br><br>
+            <br>
+            Which of the following permissions should be open to everyone?
+            <br><input type="checkbox"/> Weekly Eval
+            <br><input type="checkbox"/> Monthly Eval
+            <br><input type="checkbox"/> Trading
+            <br><button onclick="submit()">Update Permisisons</button>
+            <p id="successMessage" style="display: none"> Permissions updated </p>
+            <br><br><br>
             <button onclick="home()">
                 Return to Home Dashboard
             </button>
