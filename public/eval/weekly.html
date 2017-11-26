@@ -27,6 +27,11 @@
         </div>
         <div id="loaded" style="display: none">
             Weekly Report
+            <br>
+            <p> How did you feel this week 0-100 (uniform distribution). Remember to consider the whole week and not just how you're currently doing" </p>
+            <input id="rating" type="number"/>
+            <br><button onclick="submitWeekly()">Submit</button>
+            <br><p id="error" style="display:none">Try again idiot</p>
         </div>
     </body>
     <script src="./eval.js"></script>

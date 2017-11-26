@@ -36,3 +36,11 @@ var start = function(user) {
 var home = function() {
     window.location = "https://gnomestocks.com/";  
 }
+
+var submitWeekly = function() {
+    var rating = document.getElementById("rating").value;
+    if (!isNaN(parseFloat(rating)) && isFinite(rating) && rating >= 0 && rating <= 100) {
+        consolelog(rating);
+    } else
+        document.getElementById("error").style = "display: lol";
+}
