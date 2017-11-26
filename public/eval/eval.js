@@ -3,9 +3,15 @@ var user;
 firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
         user = u;
-        // $("h1").text("Hello, " + u.displayName + "!"); display names will need to be filled in later...
-        displayLoadedPage();
-        start(u);
+        var loc = window.location.href
+        firebase.database().ref("master/").once('value').then(function(master) {
+            if (loc.slice(-11) === "weekly.html" && !(master.val().weekly))
+                home();
+            if (loc.slice(-12) === "monthly.html" && !(master.val().monthly))
+                home();
+            displayLoadedPage();
+            start(u);
+        });
     } else {
         window.location = "https://gnomestocks.com/auth/auth.html";  
     }
@@ -27,3 +33,6 @@ var start = function(user) {
 
 }
 
+var home = function() {
+    window.location = "https://gnomestocks.com/";  
+}
