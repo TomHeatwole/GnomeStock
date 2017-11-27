@@ -6,6 +6,7 @@ var monthly;
 var marketOpen;
 var wLow;
 var wHigh;
+var losers = {};
 
 firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
@@ -45,6 +46,20 @@ var getMasterValues = function() {
             document.getElementById("stopTrading").style = "display: lol";
         else
             document.getElementById("startTrading").style = "display: lol";
+
+        if (weekly)
+            firebase.database().ref("user/").once("value").then(function(users) {
+                for (var u in users.val())
+                    firebase.database().ref("user/" + u).once("value").then(function(usr) {
+                        losers[usr.val().name] = true;
+                        for (var w in usr.val().weekly)
+                            firebase.database().ref("user/" + u + "/" + w + "/week").once("value").then(function(i) {
+                                if (i.val() === weekIndex)
+                                    losers[usr.val().name] = false;
+                            });
+                    });
+            });
+
         displayLoadedPage();
     });
 }
@@ -118,4 +133,10 @@ var submit = function() {
     }).then(function() {
         document.getElementById("successMessage").style = "display: lol";
     });
+}
+
+var showLosers = function() {
+    var loserString = "";
+    for (var key in losers) if (losers[key]) loserString += key + " ";
+    document.getElementById("losers").innerHTML = loserString;
 }
