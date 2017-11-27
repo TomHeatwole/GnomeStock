@@ -50,14 +50,26 @@ var getMasterValues = function() {
         if (weekly)
             firebase.database().ref("user/").once("value").then(function(users) {
                 for (var u in users.val())
-                    firebase.database().ref("user/" + u).once("value").then(function(usr) {
+                    (function(u){firebase.database().ref("user/" + u).once("value").then(function(usr) {
                         losers[usr.val().name] = true;
                         for (var w in usr.val().weekly)
-                            firebase.database().ref("user/" + u + "/" + w + "/week").once("value").then(function(i) {
-                                if (i.val() === weekIndex)
+                            firebase.database().ref("user/" + u + "/weekly/" + w).once("value").then(function(i) {
+                                if (i.val().week === weekIndex)
                                     losers[usr.val().name] = false;
                             });
-                    });
+                    });})(u);
+            });
+        if (monthly)
+            firebase.database().ref("user/").once("value").then(function(users) {
+                for (var u in users.val())
+                    (function(u){firebase.database().ref("user/" + u).once("value").then(function(usr) {
+                        losers[usr.val().name] = true;
+                        for (var m in usr.val().monthly)
+                            firebase.database().ref("user/" + u + "/monthly/" + m).once("value").then(function(i) {
+                                if (i.val().month === monthIndex)
+                                    losers[usr.val().name] = false;
+                            });
+                    });})(u);
             });
 
         displayLoadedPage();
