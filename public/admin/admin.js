@@ -91,7 +91,7 @@ var startMonth = function() {
     firebase.database().ref("master/").update({
         "monthly" : true,
         "month" : (monthIndex + 1),
-        "wLow" : wHigh,
+        "wLow" : (wHigh + 1),
         "wHigh" : weekIndex
     }).then(function() {
         alert("Now accepting evals for month " + (monthIndex + 1));
