@@ -21,6 +21,13 @@ firebase.auth().onAuthStateChanged(function(u) {
     }
 });
 
+var getMasterValues = function() {
+    firebase.database().ref("master").once("value").then(function(master) {
+        weekIndex = master.val().week;
+        monthIndex = master.val().month;
+    });
+}
+
 var getUserKeyAndValidate = function(weekTemplate) {
     firebase.database().ref("user/").once('value').then(function(users) {
         for (u in users.val()) {
@@ -57,13 +64,6 @@ var getUserKeyAndValidate = function(weekTemplate) {
         }
     });
 }
-
-var getMasterValues = function() {
-    firebase.database().ref("master").once("value").then(function(master) {
-        weekIndex = master.val().week;
-        monthIndex = master.val().month;
-    });
-}       
 
 var signOut = function() {
     firebase.auth().signOut().catch(function(e) {
