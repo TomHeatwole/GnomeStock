@@ -4,7 +4,6 @@
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico" />
     <link rel="stylesheet" href="../stylesheet.css">
     <script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
-    <script> require("async"); </script>
     <script>
     // Initialize Firebase
         var config = {
@@ -28,6 +27,27 @@
         </div>
         <div id="loaded" style="display: none">
             Monthly Report 
+            <br>
+            <p> How did you feel this month 0-100 (uniform distribution). Remember to consider the whole month and not just how you're currently doing" </p>
+            <p> Here are your weekly scores since the last monthly report for reference: </p>
+            <br><br><!-- TODO: DISPLAY SCORES --></br><br>
+            Your monthly rating: <input id="rating" type="number"/>
+            <br><br><br>
+            How would you say that each of the following people have done this month? (0-10)
+            <div id="Tom">
+                Tom: <input id="TomRating" type="number"/>
+            </div>
+            <div id="Alex">
+                Alex: <input id="AlexRating" type="number"/>
+            </div>
+            <div id="Mac">
+                Mac: <input id="MacRating" type="number"/>
+            </div>
+            <div id="Jack">
+                Jack <input id="JackRating" type="number"/>
+            </div>
+            <br><button onclick="submitMonthly()">Submit</button>
+            <br><p id="error" style="display:none">Try again idiot</p>
         </div>
     </body>
     <script src="./eval.js"></script>

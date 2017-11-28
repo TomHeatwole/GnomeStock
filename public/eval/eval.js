@@ -35,6 +35,7 @@ var getUserKeyAndValidate = function(weekTemplate) {
                 firebase.database().ref("user/" + u).once("value").then(function(usr){
                     if (usr.val().email === firebase.auth().currentUser.email) {
                         userKey = u;
+                        document.getElementById(usr.val().name).style = "display: none";
                         if (weekTemplate) {
                             for (var w in usr.val().weekly) {
                                 (function(w) {
@@ -86,7 +87,7 @@ var home = function() {
 
 var submitWeekly = function() {
     var rating = document.getElementById("rating").value;
-    if (!isNaN(parseFloat(rating)) && isFinite(rating) && rating >= 0 && rating <= 100) {
+    if (!isNaN(parseInt(rating)) && isFinite(rating) && rating >= 0 && rating <= 100) {
         firebase.database().ref("user/" + userKey + "/weekly").push({
             "week" : weekIndex,
             "rating" : rating
@@ -99,4 +100,53 @@ var submitWeekly = function() {
 }
 
 var submitMonthly = function() {
+    var postData = {};
+    var rating = document.getElementById("rating").value;
+    if (isNaN(parseInt(rating)) || !isFinite(rating) || rating < 0 || rating > 100) {
+        document.getElementById("error").style = "display: lol";
+        return;
+    }
+    postData["rating"] = rating;
+    var error = false;
+    firebase.database().ref("user/").once("value").then(function(users) {
+        for (var u in users.val()) (function(u) {
+            if (u === userKey)
+                return;
+            firebase.database().ref("user/usr1").once("value").then(function(usr) {
+                console.log(usr.val());
+                var usrRating = document.getElementById(usr.val().name).value;
+                if (isNaN(parseInt(usrRating)) || !isFinite(usrRating) || usrRating < 0 || usrRating > 10)
+                    error = true;
+                postData[usr.val().name] = usrRating;
+            });
+        })(u);
+    });
+    if (error)
+        document.getElementById("error").style = "display: lol";
+    else {
+        postData["month"] = monthIndex;
+        firebase.database().ref("user/" + userKey + "/monthly").push(postData).then(function() {
+            alert("Successfully recorded monthly evaluation");
+            window.location = "https://gnomestocks.com/"
+        });
+        // TODO later on: check if it's time to open the markets or at least close monthly evals 
+    }
 }
+
+
+// ISSUES:
+// Not stopping user from entering second monthly eval
+// .then on line 115 not excecuting?
+
+
+
+
+
+
+
+
+
+
+
+
+
