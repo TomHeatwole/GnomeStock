@@ -100,12 +100,8 @@ var submitWeekly = function() {
 }
 
 var submitMonthly = function() {
+    if (!validateMonthly()) return;
     var postData = {};
-    var rating = document.getElementById("rating").value;
-    if (isNaN(parseInt(rating)) || !isFinite(rating) || rating < 0 || rating > 100) {
-        document.getElementById("error").style = "display: lol";
-        return;
-    }
     postData["rating"] = rating;
     var error = false;
     firebase.database().ref("user/").once("value").then(function(users) {
@@ -131,6 +127,23 @@ var submitMonthly = function() {
         });
         // TODO later on: check if it's time to open the markets or at least close monthly evals 
     }
+}
+
+var validateMonthly = function() {
+    var ratings = document.getElementsByTagName("inpput");
+    var selfRating = ratings[0].value;
+    if (isNaN(parseInt(selfRating) || !isFinite(selfRating) || selfRating < 0 || selfRating > 100) {
+        document.getElementById("error").style = "display: lol";
+        return false;
+    }
+    for (int i = 1; i < ratings.length; i++) {
+        var rating = ratings[i].value;
+        if (isNaN(parseInt(selfRating) || !isFinite(selfRating) || selfRating < 0 || selfRating > 100) {
+            document.getElementById("error").style = "display: lol";
+            return false;
+        }
+    }
+    return true;
 }
 
 
