@@ -1,5 +1,6 @@
 var user;
 var userKey;
+var name;
 var weekIndex;
 var monthIndex;
 
@@ -35,6 +36,7 @@ var getUserKeyAndValidate = function(weekTemplate) {
                 firebase.database().ref("user/" + u).once("value").then(function(usr){
                     if (usr.val().email === firebase.auth().currentUser.email) {
                         userKey = u;
+                        name = usr.val().name;
                         document.getElementById(usr.val().name).style = "display: none";
                         if (weekTemplate) {
                             for (var w in usr.val().weekly) {
@@ -87,7 +89,7 @@ var home = function() {
 
 var submitWeekly = function() {
     var rating = document.getElementById("rating").value;
-    if (!isNaN(parseInt(rating)) && isFinite(rating) && rating >= 0 && rating <= 100) {
+    if (!isNaN(rating) && isFinite(rating) && rating >= 0 && rating <= 100) {
         firebase.database().ref("user/" + userKey + "/weekly").push({
             "week" : weekIndex,
             "rating" : rating
@@ -100,23 +102,24 @@ var submitWeekly = function() {
 }
 
 var submitMonthly = function() {
-    if (!validateMonthly()) return;
     var postData = {};
-    postData["rating"] = rating;
     var error = false;
-    firebase.database().ref("user/").once("value").then(function(users) {
-        for (var u in users.val()) (function(u) {
-            if (u === userKey)
-                return;
-            firebase.database().ref("user/usr1").once("value").then(function(usr) {
-                console.log(usr.val());
-                var usrRating = document.getElementById(usr.val().name).value;
-                if (isNaN(parseInt(usrRating)) || !isFinite(usrRating) || usrRating < 0 || usrRating > 10)
-                    error = true;
-                postData[usr.val().name] = usrRating;
-            });
-        })(u);
-    });
+    var ratings = document.getElementsByTagName("input");
+    var selfRating = parseInt(ratings[0].value, 10);
+    postData["rating"] = selfRating;
+    if (isNaN(selfRating) || !isFinite(selfRating) || selfRating < 0 || selfRating > 100) {
+        document.getElementById("error").style = "display: lol";
+        error = true;
+    }
+    for (var i = 1; i < ratings.length; i++) {
+        if (ratings[i].id === name + "Rating") continue;
+        var rating = parseInt(ratings[i].value);
+        postData[ratings[i].id] = rating;
+        if (isNaN(rating) || !isFinite(rating) || rating < 0 || rating > 10) {
+            document.getElementById("error").style = "display: lol";
+            error = true;
+        }
+    }
     if (error)
         document.getElementById("error").style = "display: lol";
     else {
@@ -128,38 +131,4 @@ var submitMonthly = function() {
         // TODO later on: check if it's time to open the markets or at least close monthly evals 
     }
 }
-
-var validateMonthly = function() {
-    var ratings = document.getElementsByTagName("inpput");
-    var selfRating = ratings[0].value;
-    if (isNaN(parseInt(selfRating) || !isFinite(selfRating) || selfRating < 0 || selfRating > 100) {
-        document.getElementById("error").style = "display: lol";
-        return false;
-    }
-    for (int i = 1; i < ratings.length; i++) {
-        var rating = ratings[i].value;
-        if (isNaN(parseInt(selfRating) || !isFinite(selfRating) || selfRating < 0 || selfRating > 100) {
-            document.getElementById("error").style = "display: lol";
-            return false;
-        }
-    }
-    return true;
-}
-
-
-// ISSUES:
-// Not stopping user from entering second monthly eval
-// .then on line 115 not excecuting?
-
-
-
-
-
-
-
-
-
-
-
-
 
