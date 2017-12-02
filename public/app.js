@@ -9,7 +9,7 @@ firebase.auth().onAuthStateChanged(function(u) {
         getMasterValues();
         $("h1").text("Hello, " + u.displayName + "!");
         start(u);
-        displayLoadedPage();
+        getMasterValues();
     } else {
         window.location = "https://gnomestocks.com/auth/auth.html";  
     }
@@ -23,8 +23,9 @@ var getMasterValues = function() {
             document.getElementById("weekly").style = "display: lol";
         if (master.val().monthly)
             document.getElementById("monthly").style = "display: lol";
-        if (master.val().market-open)
-            document.getElementById("market-open").style = "display: lol";
+        if (master.val().market)
+            document.getElementById("market").style = "display: lol";
+        displayLoadedPage();
     });
 }       
 
@@ -42,17 +43,3 @@ var displayLoadedPage = function() {
 var start = function(user) {
 
 }
-
-var getMasterValues = function() {
-    firebase.database().ref("master").once("value").then(function(master) {
-        weekIndex = master.val().week;
-        monthIndex = master.val().month;
-        if (master.val().weekly)
-            document.getElementById("weekly").style = "display: lol";
-        if (master.val().monthly)
-            document.getElementById("monthly").style = "display: lol";
-        if (master.val().market-open)
-            document.getElementById("market-open").style = "display: lol";
-    });
-}       
-

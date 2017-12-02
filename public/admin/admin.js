@@ -43,7 +43,7 @@ var getMasterValues = function() {
         else
             document.getElementById("startMonth").style = "display: lol";
         if (marketOpen)
-            document.getElementById("stopTrading").style = "display: lol";
+            document.getElementById("endTrading").style = "display: lol";
         else
             document.getElementById("startTrading").style = "display: lol";
 
@@ -135,6 +135,25 @@ var endMonth = function() {
     });
 }
 
+var startTrading = function() {
+    // UPDATE ALL SCORES AND EVERYTHING
+    firebase.database().ref("master/").update({
+        "market" : true
+    }).then(function() {
+        alert("Trading has been enabled");
+        window.location.reload();
+    });
+}
+
+var endTrading = function() {
+    // UPDATE ALL SCORES AND EVERYTHING
+    firebase.database().ref("master/").update({
+        "market" : false
+    }).then(function() {
+        alert("You have turned off trading");
+        window.location.reload();
+    });
+}
 
 var submit = function() {
     var perms = document.getElementsByTagName("input"); // weekly, monthly, trading
