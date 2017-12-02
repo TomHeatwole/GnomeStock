@@ -7,7 +7,6 @@ firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
         user = u;
         getMasterValues();
-        displayLoadedPage();
         $("h1").text("Hello, " + u.displayName + "!");
         start(u);
     } else {
@@ -25,6 +24,7 @@ var getMasterValues = function() {
             document.getElementById("monthly").style = "display: lol";
         if (master.val().market-open)
             document.getElementById("market-open").style = "display: lol";
+        displayLoadedPage();
     });
 }       
 
