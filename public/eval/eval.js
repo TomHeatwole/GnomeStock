@@ -3,6 +3,9 @@ var userKey;
 var name;
 var weekIndex;
 var monthIndex;
+var wHigh;
+var wLow;
+var weekRatings;
 
 firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
@@ -12,9 +15,7 @@ firebase.auth().onAuthStateChanged(function(u) {
         firebase.database().ref("master/").once('value').then(function(master) {
             if ((weekTemplate && !(master.val().weekly)) || (!weekTemplate && !master.val().monthly))
                 home();
-            getMasterValues();
-            getUserKeyAndValidate(weekTemplate);
-            displayLoadedPage();
+            getDataAndValidate(weekTemplate);
             start(u);
         });
     } else {
@@ -22,49 +23,64 @@ firebase.auth().onAuthStateChanged(function(u) {
     }
 });
 
-var getMasterValues = function() {
+var getDataAndValidate = function(weekTemplate) {
     firebase.database().ref("master").once("value").then(function(master) {
         weekIndex = master.val().week;
         monthIndex = master.val().month;
-    });
-}
-
-var getUserKeyAndValidate = function(weekTemplate) {
-    firebase.database().ref("user/").once('value').then(function(users) {
-        for (u in users.val()) {
-            (function(u) {
-                firebase.database().ref("user/" + u).once("value").then(function(usr){
-                    if (usr.val().email === firebase.auth().currentUser.email) {
-                        userKey = u;
-                        name = usr.val().name;
-                        document.getElementById(usr.val().name).style = "display: none";
-                        if (weekTemplate) {
-                            for (var w in usr.val().weekly) {
-                                (function(w) {
-                                    firebase.database().ref("user/" + u + "/weekly/" + w + "/week").once("value").then(function(i) {
-                                        if (i.val() === weekIndex) {
-                                            alert("You have already submitted an evaluation for week " + weekIndex);
-                                            home();
-                                        }
-                                    });
-                                })(w);
-                            }
-                        } else {
-                            for (var m in usr.val().monthly) {
-                                (function(m) {
-                                    firebase.database().ref("user/" + u + "/monthly/" + m + "/month").once("value").then(function(i) {
-                                        if (i.val() === monthIndex) {
-                                            alert("You have already submitted an evaluation for month " + monthIndex);
-                                            home();
-                                        }
-                                    });
-                                })(w);
+        wHigh = master.val().wHigh;
+        wLow = master.val().wLow;
+        firebase.database().ref("user/").once('value').then(function(users) {
+            for (u in users.val()) {
+                (function(u) {
+                    firebase.database().ref("user/" + u).once("value").then(function(usr){
+                        if (usr.val().email === firebase.auth().currentUser.email) {
+                            userKey = u;
+                            name = usr.val().name;
+                            document.getElementById(usr.val().name).style = "display: none";
+                            if (weekTemplate) {
+                                for (var w in usr.val().weekly) {
+                                    (function(w) {
+                                        firebase.database().ref("user/" + u + "/weekly/" + w + "/week").once("value").then(function(i) {
+                                            if (i.val() === weekIndex) {
+                                                alert("You have already submitted an evaluation for week " + weekIndex);
+                                                home();
+                                            }
+                                        });
+                                    })(w);
+                                }
+                            } else {
+                                for (var m in usr.val().monthly) {
+                                    (function(m) {
+                                        firebase.database().ref("user/" + u + "/monthly/" + m + "/month").once("value").then(function(i) {
+                                            if (i.val() === monthIndex) {
+                                                alert("You have already submitted an evaluation for month " + monthIndex);
+                                                home();
+                                            }
+                                        });
+                                    })(w);
+                                }
+                                weekRatings = "";
+                                var count = 0;
+                                for (var w in usr.val().weekly) count++;
+                                for (var w in usr.val().weekly) {
+                                    count--;
+                                    (function(w, count, length) {
+                                        firebase.database().ref("user/" + u + "/weekly/" + w).once("value").then(function(i) {
+                                            if (i.val().week >= wLow && i.val().week <= wHigh)
+                                                weekRatings += "<br>Week: " + i.val().week + ": " + i.val().rating;
+                                            if (count == 0) {
+                                                document.getElementById("weekRatings").innerHTML = "For reference, here are the weekly ratings you have self-reported this month: " + weekRatings;
+                                            }
+                                        });
+                                    })(w, count, length);
+                                }
                             }
                         }
-                    }
-                });
-            }(u));
-        }
+                        displayLoadedPage();
+                    });
+                }(u));
+            }   
+        });
     });
 }
 
