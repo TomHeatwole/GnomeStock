@@ -36,7 +36,6 @@ var getDataAndValidate = function(weekTemplate) {
                         if (usr.val().email === firebase.auth().currentUser.email) {
                             userKey = u;
                             name = usr.val().name;
-                            document.getElementById(usr.val().name).style = "display: none";
                             if (weekTemplate) {
                                 for (var w in usr.val().weekly) {
                                     (function(w) {
@@ -49,6 +48,7 @@ var getDataAndValidate = function(weekTemplate) {
                                     })(w);
                                 }
                             } else {
+                                document.getElementById(usr.val().name).style = "display: none";
                                 for (var m in usr.val().monthly) {
                                     (function(m) {
                                         firebase.database().ref("user/" + u + "/monthly/" + m + "/month").once("value").then(function(i) {
@@ -57,7 +57,7 @@ var getDataAndValidate = function(weekTemplate) {
                                                 home();
                                             }
                                         });
-                                    })(w);
+                                    })(m);
                                 }
                                 weekRatings = "";
                                 var count = 0;
@@ -114,7 +114,7 @@ var submitWeekly = function() {
             home();
         });
     } else
-        document.getElementById("error").style = "display: lol";
+        document.getElementById("error").style = "display: lol; color: red";
 }
 
 var submitMonthly = function() {
@@ -137,7 +137,7 @@ var submitMonthly = function() {
         }
     }
     if (error)
-        document.getElementById("error").style = "display: lol";
+        document.getElementById("error").style = "display: lol; color: red";
     else {
         postData["month"] = monthIndex;
         firebase.database().ref("user/" + userKey + "/monthly").push(postData).then(function() {

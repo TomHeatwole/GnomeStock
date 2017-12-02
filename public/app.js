@@ -9,6 +9,7 @@ firebase.auth().onAuthStateChanged(function(u) {
         getMasterValues();
         $("h1").text("Hello, " + u.displayName + "!");
         start(u);
+        displayLoadedPage();
     } else {
         window.location = "https://gnomestocks.com/auth/auth.html";  
     }
@@ -24,7 +25,6 @@ var getMasterValues = function() {
             document.getElementById("monthly").style = "display: lol";
         if (master.val().market-open)
             document.getElementById("market-open").style = "display: lol";
-        displayLoadedPage();
     });
 }       
 
