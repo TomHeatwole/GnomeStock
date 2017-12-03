@@ -3,6 +3,7 @@
     <head>
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico" />
     <link rel="stylesheet" href="../stylesheet.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
     <script>
     // Initialize Firebase
@@ -26,7 +27,34 @@
             GnomeStock is loding...
         </div>
         <div id="loaded" style="display: none">
-            Trading Interface
+            <b>Your portfolio value: </b>$<Master></Master>
+            <br><br>
+            Week <Master></Master> Prices:
+            <br>
+            $TOM: <Tom></Tom><br>
+            $MAC: <Mac></Mac><br>
+            $JACK: <Jack></Jack><br>
+            $ALEX: <Alex></Alex><br>
+            <br><br>
+            Your Investments:<br>
+            <button onclick="minus('Tom')">-</button>
+            <!--$TOM <b>6.35</b> <Tom><i class="fa fa-long-arrow-up" aria-hidden="true"></i>.12 (1.2%)</Tom>:  <b><Tom></Tom> Shares</b>-->
+            $TOM: <Tom></Tom> Shares
+            <button onclick="plus('Tom')">+</button>
+            <br>
+            <button onclick="minus('Mac')">-</button>
+            $MAC: <Mac></Mac> Shares 
+            <button onclick="plus('Mac')">+</button>
+            <br>
+            <button onclick="minus('Jack')">-</button>
+            $JACK: <Jack></Jack> Shares 
+            <button onclick="plus('Jack')">+</button>
+            <br>
+            <button onclick="minus('Alex')">-</button>
+            $ALEX: <Alex></Alex> Shares 
+            <button onclick="plus('Alex')">+</button>
+            <br>
+            Remaining Buying Power: $<Master></Master>
         </div>
     </body>
     <script src="./market.js"></script>
