@@ -27,8 +27,10 @@ var getDataAndValidate = function() {
         document.getElementsByTagName("Master")[3].innerHTML = monthIndex;
     });
     firebase.database().ref("user/").once('value').then(function(users) {
+        var count = 0;
         for (u in users.val()) {
-            (function(u) {
+            count++;
+            (function(u, count) {
                 firebase.database().ref("user/" + u).once("value").then(function(usr){
                     if (usr.val().email === firebase.auth().currentUser.email) {
                         userKey = u;
@@ -39,7 +41,6 @@ var getDataAndValidate = function() {
                         masterTags[1].innerHTML = dollarString(total);
                         populateChangeString(9824, total, masterTags[2], masterTags[0]);
                         document.getElementsByTagName("Tom")[3].innerHTML = usr.val().shares.Tom;
-                        document.getElementsByTagName("Tom")[3].style.color = document.getElementsByTagName("Tom")[2].style.color;
                         document.getElementsByTagName("Alex")[3].innerHTML = usr.val().shares.Alex;
                         document.getElementsByTagName("Mac")[3].innerHTML = usr.val().shares.Mac;
                         document.getElementsByTagName("Jack")[3].innerHTML = usr.val().shares.Jack;
@@ -48,8 +49,14 @@ var getDataAndValidate = function() {
                     usrTags[1].innerHTML = dollarString(usr.val().price);
                     populateChangeString(500, usr.val().price, usrTags[2], usrTags[0]);
                     prices[usr.val().name] = usr.val().price;
+                    if (count ==+ 4) {
+                        document.getElementsByTagName("Jack")[4].innerHTML = dollarString(document.getElementsByTagName("Jack")[3].innerHTML * prices["Jack"]);
+                        document.getElementsByTagName("Mac")[4].innerHTML = dollarString(document.getElementsByTagName("Mac")[3].innerHTML * prices["Mac"]);
+                        document.getElementsByTagName("Alex")[4].innerHTML = dollarString(document.getElementsByTagName("Alex")[3].innerHTML* prices["Alex"]);
+                        document.getElementsByTagName("Tom")[4].innerHTML = dollarString(document.getElementsByTagName("Tom")[3].innerHTML * prices["Tom"]);
+                    }
                 });
-            })(u);
+            })(u, count);
         }
     });
     displayLoadedPage();
@@ -72,6 +79,7 @@ var minus = function(stock) {
     }
     e.innerHTML = current - 1;
     var e2 = document.getElementsByTagName("master")[4];
+    document.getElementsByTagName(stock)[4].innerHTML = dollarString(prices[stock] * (current - 1));
     var bp = dollarsToCents(e2.innerHTML) + prices[stock];
     e2.innerHTML = dollarString(bp);
     firebase.database().ref("user/" + userKey + "/shares/" + stock).set(current - 1).then(function() {
@@ -104,6 +112,7 @@ var plus = function(stock) {
     bp = bp - prices[stock];
     e.innerHTML = current + 1;
     e2.innerHTML = dollarString(bp);
+    document.getElementsByTagName(stock)[4].innerHTML = dollarString(prices[stock] * (current + 1));
     firebase.database().ref("user/" + userKey + "/shares/" + stock).set(current + 1).then(function() {
         firebase.database().ref("user/" + userKey + "/bp").set(bp).then(function() {
             firebase.database().ref("user/" + userKey + "/changes/" + stock).transaction(function(c){
@@ -113,12 +122,6 @@ var plus = function(stock) {
         });
     });
 }
-
-// update buying power
-// update # shares 
-// update changes
-//
-// Also let's update the history (including changes) on market close
 
 var dollarString = function(num) {
     num = "" + num;
