@@ -4,6 +4,8 @@ var name;
 var weekIndex;
 var monthIndex;
 var total;
+var wait = false;
+var prices = {};
 
 firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
@@ -33,7 +35,7 @@ var getDataAndValidate = function() {
                         name = usr.val().name;
                         total = usr.val().total;
                         var masterTags = document.getElementsByTagName("Master");
-                        masterTags[4].innerHTML = usr.val().bp;
+                        masterTags[4].innerHTML = dollarString(usr.val().bp);
                         masterTags[1].innerHTML = dollarString(total);
                         populateChangeString(9824, total, masterTags[2], masterTags[0]);
                         document.getElementsByTagName("Tom")[3].innerHTML = usr.val().shares.Tom;
@@ -45,6 +47,7 @@ var getDataAndValidate = function() {
                     var usrTags = document.getElementsByTagName(usr.val().name);
                     usrTags[1].innerHTML = dollarString(usr.val().price);
                     populateChangeString(500, usr.val().price, usrTags[2], usrTags[0]);
+                    prices[usr.val().name] = usr.val().price;
                 });
             })(u);
         }
@@ -58,18 +61,52 @@ var displayLoadedPage = function() {
 }
 
 var minus = function(stock) {
-    console.log("-" + stock);
+    if (wait) return;
+    wait = true;
+    var e = document.getElementsByTagName(stock)[3];
+    var current = parseInt(e.innerHTML);
+    e.innerHTML = current - 1;
+    var e2 = document.getElementsByTagName("master")[4];
+    var bp = dollarsToCents(e2.innerHTML) + prices[stock];
+    e2.innerHTML = dollarString(bp);
+    if (current == 0) {
+        wait = false;
+        alert("You have no shares to sell");
+        return;
+    }
+    firebase.database().ref("user/" + userKey + "/shares/" + stock).set(current - 1).then(function() {
+        firebase.database().ref("user/" + userKey + "/bp").set(bp).then(function() {
+            firebase.database().ref("user/" + userKey + "/changes/" + stock).transaction(function(c){
+                wait = false;
+                return c - 1;
+            });
+        });
+    });
 }
 
 var plus = function(stock) {
-    console.log("-" + stock);
+    if (wait) return;
 }
+
+// validate (buying power, self limit)
+// update buying power
+// update # shares 
+// update changes
+//
+// Also let's update the history (including changes) on market close
 
 var dollarString = function(num) {
     num = "" + num;
     if (num.length === 1) return "0.0" + num;
     if (num.length === 2) return "0." + num;
     return num.slice(0,num.length - 2) + "." + num.slice(-2);
+}
+
+var dollarsToCents = function(d) {
+    var dot = d.indexOf('.');
+    var dollar = parseInt(d.slice(0,dot));
+    var cent = parseInt(d.slice(dot + 1));
+    return dollar * 100 + cent;
 }
 
 var populateChangeString = function(oldNum, newNum, e, e2) {
@@ -110,10 +147,4 @@ var roundTwoDisplayString = function(num) {
     while (num.length - 3 < dIndex) num += "0";
     return num;
 }
-
-// validate (buying power, self limit, can't sell at 0)
-// update buying power
-// update # shares 
-//
-// Also let's update the history on market close
 
