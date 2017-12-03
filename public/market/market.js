@@ -65,15 +65,15 @@ var minus = function(stock) {
     wait = true;
     var e = document.getElementsByTagName(stock)[3];
     var current = parseInt(e.innerHTML);
+    if (current == 0) {
+        wait = false;
+        alert("You have no shares to sell this stock");
+        return;
+    }
     e.innerHTML = current - 1;
     var e2 = document.getElementsByTagName("master")[4];
     var bp = dollarsToCents(e2.innerHTML) + prices[stock];
     e2.innerHTML = dollarString(bp);
-    if (current == 0) {
-        wait = false;
-        alert("You have no shares to sell");
-        return;
-    }
     firebase.database().ref("user/" + userKey + "/shares/" + stock).set(current - 1).then(function() {
         firebase.database().ref("user/" + userKey + "/bp").set(bp).then(function() {
             firebase.database().ref("user/" + userKey + "/changes/" + stock).transaction(function(c){
@@ -86,9 +86,34 @@ var minus = function(stock) {
 
 var plus = function(stock) {
     if (wait) return;
+    wait = true;
+    var e2 = document.getElementsByTagName("master")[4];
+    var bp = dollarsToCents(e2.innerHTML);
+    var e = document.getElementsByTagName(stock)[3];
+    var current = parseInt(e.innerHTML);
+    if (bp < prices[stock]) {
+        wait = false;
+        alert("You don't have enough buying power to invest in this stock.");
+        return;
+    }
+    if (stock === name && current > 1) {
+        wait = false;
+        alert("You may not own more than two shares of your own stock.");
+        return;
+    } 
+    bp = bp - prices[stock];
+    e.innerHTML = current + 1;
+    e2.innerHTML = dollarString(bp);
+    firebase.database().ref("user/" + userKey + "/shares/" + stock).set(current + 1).then(function() {
+        firebase.database().ref("user/" + userKey + "/bp").set(bp).then(function() {
+            firebase.database().ref("user/" + userKey + "/changes/" + stock).transaction(function(c){
+                wait = false;
+                return c + 1;
+            });
+        });
+    });
 }
 
-// validate (buying power, self limit)
 // update buying power
 // update # shares 
 // update changes
@@ -146,5 +171,9 @@ var roundTwoDisplayString = function(num) {
     if (dIndex === -1) return num + ".00";
     while (num.length - 3 < dIndex) num += "0";
     return num;
+}
+
+var home = function() {
+    window.location = "https://gnomestocks.com/";
 }
 
