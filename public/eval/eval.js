@@ -71,7 +71,8 @@ var getDataAndValidate = function(weekTemplate) {
                                                 weekRatings += "<br>Week: " + i.val().week + ": " + i.val().rating;
                                                 weekAverage += i.val().rating;
                                             if (count == 0) {
-                                                document.getElementById("weekRatings").innerHTML = "For reference, here are the weekly ratings you have self-reported this month: " + weekRatings;
+                                                document.getElementById("weekRatings").innerHTML = "For reference, here are the weekly ratings you have self-reported this month: <b>"
+                                                    + weekRatings + "</b>";
                                             }
                                         });
                                     })(w, count, length);
