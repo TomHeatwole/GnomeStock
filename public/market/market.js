@@ -17,7 +17,7 @@ firebase.auth().onAuthStateChanged(function(u) {
             getHistory();
         });
     } else {
-        window.location = "https://gnomestocks.com/auth/auth.html";  
+        window.location = "https://gnomestocks.com/auth/";  
     }
 });
 

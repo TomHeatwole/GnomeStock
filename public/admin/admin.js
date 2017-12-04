@@ -18,7 +18,7 @@ firebase.auth().onAuthStateChanged(function(u) {
         getMasterValues();
         start(u);
     } else {
-        window.location = "https://gnomestocks.com/auth/auth.html";  
+        window.location = "https://gnomestocks.com/auth/";  
     }
 });
 
@@ -97,7 +97,7 @@ var start = function(user) {
 }
 
 var home = function() {
-    window.location = "https://gnomestocks.com/auth/auth.html";
+    window.location = "https://gnomestocks.com/";
 }
 
 var startWeek = function() {
