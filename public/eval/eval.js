@@ -6,6 +6,7 @@ var monthIndex;
 var wHigh;
 var wLow;
 var weekRatings;
+var weekAverage = 0;
 
 firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
@@ -68,6 +69,7 @@ var getDataAndValidate = function(weekTemplate) {
                                         firebase.database().ref("user/" + u + "/weekly/" + w).once("value").then(function(i) {
                                             if (i.val().week >= wLow && i.val().week <= wHigh)
                                                 weekRatings += "<br>Week: " + i.val().week + ": " + i.val().rating;
+                                                weekAverage += i.val().rating;
                                             if (count == 0) {
                                                 document.getElementById("weekRatings").innerHTML = "For reference, here are the weekly ratings you have self-reported this month: " + weekRatings;
                                             }
@@ -108,7 +110,7 @@ var submitWeekly = function() {
     if (!isNaN(rating) && isFinite(rating) && rating >= 0 && rating <= 100) {
         firebase.database().ref("user/" + userKey + "/weekly").push({
             "week" : weekIndex,
-            "rating" : rating
+            "rating" : parseInt(rating, 10)
         }).then(function() {
             alert("You have successfully entered your weekly rating");
             home();
@@ -123,6 +125,7 @@ var submitMonthly = function() {
     var ratings = document.getElementsByTagName("input");
     var selfRating = parseInt(ratings[0].value, 10);
     postData["rating"] = selfRating;
+    postData["weekAverage"] = weekAverage / (wHigh - wLow + 1);
     if (isNaN(selfRating) || !isFinite(selfRating) || selfRating < 0 || selfRating > 100) {
         document.getElementById("error").style = "display: lol";
         error = true;

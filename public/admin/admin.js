@@ -1,4 +1,5 @@
-var user;
+;var user;
+var name;
 var weekIndex;
 var monthIndex;
 var weekly;
@@ -50,26 +51,30 @@ var getMasterValues = function() {
         if (weekly)
             firebase.database().ref("user/").once("value").then(function(users) {
                 for (var u in users.val())
-                    (function(u){firebase.database().ref("user/" + u).once("value").then(function(usr) {
-                        losers[usr.val().name] = true;
-                        for (var w in usr.val().weekly)
-                            firebase.database().ref("user/" + u + "/weekly/" + w).once("value").then(function(i) {
-                                if (i.val().week === weekIndex)
-                                    losers[usr.val().name] = false;
-                            });
-                    });})(u);
+                    (function(u) {
+                        firebase.database().ref("user/" + u).once("value").then(function(usr) {
+                            losers[usr.val().name] = true;
+                            for (var w in usr.val().weekly)
+                                firebase.database().ref("user/" + u + "/weekly/" + w).once("value").then(function(i) {
+                                    if (i.val().week === weekIndex)
+                                        losers[usr.val().name] = false;
+                                });
+                        });
+                    })(u);
             });
         if (monthly)
             firebase.database().ref("user/").once("value").then(function(users) {
                 for (var u in users.val())
-                    (function(u){firebase.database().ref("user/" + u).once("value").then(function(usr) {
-                        losers[usr.val().name] = true;
-                        for (var m in usr.val().monthly)
+                    (function(u) {
+                        firebase.database().ref("user/" + u).once("value").then(function(usr) {
+                            losers[usr.val().name] = true;
+                            for (var m in usr.val().monthly)
                             firebase.database().ref("user/" + u + "/monthly/" + m).once("value").then(function(i) {
                                 if (i.val().month === monthIndex)
                                     losers[usr.val().name] = false;
-                            });
-                    });})(u);
+                                });
+                        });
+                    })(u);
             });
 
         displayLoadedPage();
@@ -136,31 +141,118 @@ var endMonth = function() {
 }
 
 var startTrading = function() {
-    // UPDATE ALL SCORES AND EVERYTHING
     firebase.database().ref("master/").update({
         "market" : true
     }).then(function() {
-        alert("Trading has been enabled");
-        window.location.reload();
+        firebase.database().ref("user/").once("value").then(function(users) {
+            var peerEvals = {
+                "Tom" : 0,
+                "Alex" : 0,
+                "Jack" : 0,
+                "Mac" : 0,
+            };
+            var monthRatings = {};
+            var weekAverages = {};
+            var count = 0;
+            var prices = {};
+            for (var u in users.val()) (function(u) {
+                firebase.database().ref("user/" + u).once("value").then(function(usr) {
+                    firebase.database().ref("user/" + u + "/changes/").update({
+                        "Tom" : 0,
+                        "Alex" : 0,
+                        "Mac" : 0,
+                        "Jack" : 0
+                    }).then(function() {
+                        firebase.database().ref("user/" + u + "/monthly/").once("value").then(function(months) {
+                            for (var m in months.val()) (function(m) {
+                                firebase.database().ref("user/" + u + "/monthly/" + m).once("value").then(function(i) {
+                                    if (i.val().month === monthIndex) {
+                                        count++; 
+                                        peerEvals["Tom"] += (usr.val().name === "Tom") ? 0 : i.val().TomRating;
+                                        peerEvals["Mac"] += (usr.val().name === "Mac") ? 0 : i.val().MacRating;
+                                        peerEvals["Jack"] += (usr.val().name === "Jack") ? 0 : i.val().JackRating;
+                                        peerEvals["Alex"] += (usr.val().name === "Alex") ? 0 : i.val().AlexRating;
+                                        monthRatings[usr.val().name] = i.val().rating;
+                                        weekAverages[usr.val().name] = i.val().weekAverage;
+                                        if (count === 4) {
+                                            count = 0;
+                                            for (var u in users.val()) (function(u) {
+                                                firebase.database().ref("user/" + u).once("value").then(function(usr) {
+                                                    count++;
+                                                    var totalRating = 0.5 * monthRatings[usr.val().name] + 3.5 * (peerEvals[usr.val().name] / 3) + 0.15 * weekAverages[usr.val().name];
+                                                    prices[usr.val().name] = parseInt(100 * Math.pow(2, (totalRating / 25)), 10);
+                                                    if (count === 4) {
+                                                        count = 0;
+                                                        for (var u in users.val()) (function(u) {
+                                                            firebase.database().ref("user/" + u).once("value").then(function(usr) {
+                                                                count++;
+                                                                (function(data) {
+                                                                    var bp = data.bp;
+                                                                    console.log(bp);
+                                                                    if (bp > 1000) bp = 1000 + parseInt(0.96 * (bp - 1000), 10);
+                                                                    console.log(bp);
+                                                                    var total = 0;
+                                                                    total += prices["Tom"] * data.shares.Tom;
+                                                                    total += prices["Mac"] * data.shares.Mac;
+                                                                    total += prices["Jack"] * data.shares.Jack;
+                                                                    total += prices["Alex"] * data.shares.Alex;
+                                                                    total += bp;
+                                                                    firebase.database().ref("user/" + u).update({
+                                                                        "price" : prices[data.name],
+                                                                        "bp" : bp,
+                                                                        "total" : total
+                                                                    });
+                                                                    if (count == 4) {
+                                                                        alert("You have updated scores and started trading");
+                                                                        window.location.reload();
+                                                                    }
+                                                                })(usr.val());
+                                                            });
+                                                        })(u);
+                                                    }
+                                                });
+                                            })(u);
+                                        }
+                                    }
+                                }); 
+                            })(m);
+                        });
+                    });
+                });
+            })(u);
+        });
     });
 }
 
 var endTrading = function() {
-    // UPDATE ALL SCORES AND EVERYTHING
+    // TODO: Populate "action" string
     firebase.database().ref("master/").update({
         "market" : false
     }).then(function() {
-        alert("You have turned off trading");
-        window.location.reload();
+        firebase.database().ref("user/").once("value").then(function(users) {
+            for (var u in users.val())
+                (function(u){
+                    firebase.database().ref("user/" + u).once("value").then(function(usr) {
+                        firebase.database().ref("user/" + u + "/history/").push({
+                            "month" : monthIndex,
+                            "price" : usr.val().price,
+                            "total" : usr.val().total,
+                            "changes" : usr.val().changes
+                        });
+                    });
+                })(u);
+            alert("You have turned off trading");
+            window.location.reload();
+        });
     });
 }
 
-var submit = function() {
+var submitManualPermissions = function() {
     var perms = document.getElementsByTagName("input"); // weekly, monthly, trading
     firebase.database().ref().update({
         "/master/weekly" : perms[0].checked,
         "/master/monthly" : perms[1].checked,
-        "/master/market-open" : perms[2].checked
+        "/master/market" : perms[2].checked
     }).then(function() {
         document.getElementById("successMessage").style = "display: lol";
     });
