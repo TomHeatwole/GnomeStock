@@ -6,6 +6,7 @@ var monthIndex;
 var total;
 var wait = false;
 var prices = {};
+var historyData = {"Tom":{}, "Alex":{}, "Jack":{}, "Mac":{}};
 
 firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
@@ -13,12 +14,31 @@ firebase.auth().onAuthStateChanged(function(u) {
         firebase.database().ref("master/").once('value').then(function(master) {
             if (!(master.val().market))
                 window.location = "https://gnomestocks.com/";  
-            getDataAndValidate();
+            getHistory();
         });
     } else {
         window.location = "https://gnomestocks.com/auth/auth.html";  
     }
 });
+
+var getHistory = function() {
+    firebase.database().ref("user/").once("value").then(function(users) {
+        var count = 0;
+        for (var u in users.val()) (function(u) {
+            firebase.database().ref("user/" + u).once("value").then(function(usr) {
+                firebase.database().ref("user/" + u + "/history/").once("value").then(function(his) {
+                count++;
+                    for (var h in his.val()) (function(h) {
+                        firebase.database().ref("user/" + u + "/history/" + h).once("value").then(function(i) {
+                            historyData[usr.val().name][i.val().month] = i.val();
+                        });
+                    })(h);
+                    if (count === 4) getDataAndValidate();
+                });
+            });
+        })(u);
+    });
+}
 
 var getDataAndValidate = function() {
     firebase.database().ref("master").once("value").then(function(master) {
@@ -39,7 +59,7 @@ var getDataAndValidate = function() {
                         var masterTags = document.getElementsByTagName("Master");
                         masterTags[4].innerHTML = dollarString(usr.val().bp);
                         masterTags[1].innerHTML = dollarString(total);
-                        populateChangeString(9824, total, masterTags[2], masterTags[0]);
+                        populateChangeString(historyData[usr.val().name][monthIndex - 1].total, total, masterTags[2], masterTags[0]);
                         document.getElementsByTagName("Tom")[3].innerHTML = usr.val().shares.Tom;
                         document.getElementsByTagName("Alex")[3].innerHTML = usr.val().shares.Alex;
                         document.getElementsByTagName("Mac")[3].innerHTML = usr.val().shares.Mac;
@@ -47,9 +67,9 @@ var getDataAndValidate = function() {
                     }
                     var usrTags = document.getElementsByTagName(usr.val().name);
                     usrTags[1].innerHTML = dollarString(usr.val().price);
-                    populateChangeString(500, usr.val().price, usrTags[2], usrTags[0]);
+                    populateChangeString(historyData[usr.val().name][monthIndex - 1].price, usr.val().price, usrTags[2], usrTags[0]);
                     prices[usr.val().name] = usr.val().price;
-                    if (count ==+ 4) {
+                    if (count === 4) {
                         document.getElementsByTagName("Jack")[4].innerHTML = dollarString(document.getElementsByTagName("Jack")[3].innerHTML * prices["Jack"]);
                         document.getElementsByTagName("Mac")[4].innerHTML = dollarString(document.getElementsByTagName("Mac")[3].innerHTML * prices["Mac"]);
                         document.getElementsByTagName("Alex")[4].innerHTML = dollarString(document.getElementsByTagName("Alex")[3].innerHTML* prices["Alex"]);

@@ -225,13 +225,12 @@ var startTrading = function() {
 }
 
 var endTrading = function() {
-    // TODO: Populate "action" string
     firebase.database().ref("master/").update({
         "market" : false
     }).then(function() {
         firebase.database().ref("user/").once("value").then(function(users) {
             for (var u in users.val())
-                (function(u){
+                (function(u) {
                     firebase.database().ref("user/" + u).once("value").then(function(usr) {
                         firebase.database().ref("user/" + u + "/history/").push({
                             "month" : monthIndex,
