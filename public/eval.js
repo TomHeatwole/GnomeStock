@@ -11,8 +11,8 @@ var weekAverage = 0;
 firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
         user = u;
-        var loc = window.location.href
-        var weekTemplate = (loc.slice(-11) === "weekly.html");
+        var loc = window.location.href;
+        var weekTemplate = (loc.slice(-7) === "weekly/");
         firebase.database().ref("master/").once('value').then(function(master) {
             if ((weekTemplate && !(master.val().weekly)) || (!weekTemplate && !master.val().monthly))
                 home();

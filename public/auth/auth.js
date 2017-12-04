@@ -56,8 +56,8 @@ firebase.auth().onAuthStateChanged(function(u) {
         if (window.location != "https://gnomestocks.com/auth/changepassword.html")
             window.location = "https://gnomestocks.com/";
     } else {
-        if (window.location != "https://gnomestocks.com/auth/auth.html")
-            window.location = "https://gnomestocks.com/auth/auth.html";
+        if (window.location === "https://gnomestocks.com/auth/changepassword.html")
+            window.location = "https://gnomestocks.com/auth/";
     }
     displayLoadedPage();
 });
