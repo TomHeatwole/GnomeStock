@@ -26,12 +26,16 @@
             GnomeStock is loding...
         </div>
         <div id="loaded" style="display: none">
-            Admin Dashboard<br><br>
+            <h1>Admin Dashboard</h1>
+            Start/End voting/trading:<br>
             <button id="startWeek" style="display: none" onclick="startWeek()"></button>
             <button id="endWeek" style="display: none" onclick="endWeek()"></button><br>
             <button id="startMonth" style="display: none" onclick="startMonth()"></button>
-            <button id="endMonth" style="display: none" onclick="endMonth()"></button><br>
-            <button id="startTrading" style="display: none" onclick="startTrading()">Start Trading</button>
+            <div id="endMonthDiv" style="display : none">
+                <button id="endMonth" onclick="endMonth()"></button>
+                Name of next month: <input "monthName" type="text"/>
+            </div>
+            <br><button id="startTrading" style="display: none" onclick="startTrading()">Start Trading</button>
             <button id="endTrading" style="display: none" onclick="endTrading()">End Trading</button><br>
             <br><br>
             <button onclick="showLosers()">See who we're waiting on</button>

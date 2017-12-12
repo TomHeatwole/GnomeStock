@@ -40,6 +40,8 @@ var getMasterValues = function() {
                 firebase.database().ref("master/monthNames/" + mon).once("value").then(function(m) {
                     if (m.val().month === monthIndex)
                         document.getElementById("endMonth").innerHTML += " (" + m.val().name + ")";
+                    if (m.val().month === (monthIndex + 1))
+                        document.getElementById("startMonth").innerHTML += " (" + m.val().name + ")";
                 });
             })(mon);
         });
@@ -48,7 +50,7 @@ var getMasterValues = function() {
         else
             document.getElementById("startWeek").style = "display: lol";
         if (monthly)
-            document.getElementById("endMonth").style = "display: lol";
+            document.getElementById("endMonthDiv").style = "display: lol";
         else
             document.getElementById("startMonth").style = "display: lol";
         if (marketOpen)
@@ -143,8 +145,13 @@ var endMonth = function() {
     firebase.database().ref("master/").update({
         "monthly" : false 
     }).then(function() {
-        alert("No longer accepting evals for month " + monthIndex);
-        window.location.reload();
+        firebase.database().ref("master/monthNames").push({
+            "month" : (monthIndex + 1),
+            "name" : document.getElementById("monthName").value
+        }).then(function() {
+            alert("No longer accepting evals for month " + monthIndex);
+            window.location.reload();
+        });
     });
 }
 
@@ -257,9 +264,9 @@ var endTrading = function() {
 var submitManualPermissions = function() {
     var perms = document.getElementsByTagName("input"); // weekly, monthly, trading
     firebase.database().ref().update({
-        "/master/weekly" : perms[0].checked,
-        "/master/monthly" : perms[1].checked,
-        "/master/market" : perms[2].checked
+        "/master/weekly" : perms[1].checked,
+        "/master/monthly" : perms[2].checked,
+        "/master/market" : perms[3].checked
     }).then(function() {
         document.getElementById("successMessage").style = "display: lol";
     });
