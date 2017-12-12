@@ -44,11 +44,13 @@ li a {
 li a.active {
     background-color: #C0B283;
     color: white;
+    font-weight: bold;
 }
 
 li a:hover:not(.active) {
     background-color: #373737;
     color: white;
+    font-weight: bold;
 }
 
 h1 {

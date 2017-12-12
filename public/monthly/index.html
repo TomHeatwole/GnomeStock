@@ -22,30 +22,41 @@
         </title>
     </head>
     <body>
-        <div id=loading>
-            GnomeStock is loding...
-        </div>
-        <div id="loaded" style="display: none">
-            <h1 id="header"></h1>
-            <p> How did you feel this month 0-100 (uniform distribution). Remember to consider the whole month and not just how you're currently doing.</p>
-            <p id="weekRatings"></p><br>
-            Your monthly rating: <input id="rating" type="number"/>
-            <br><br><br>
-            How would you say that each of the following people have done this month? (0-10)
-            <div id="Tom">
-                Tom: <input id="TomRating" type="number"/>
+        <ul>
+            <li><a href="https://gnomestocks.com/">Home</a></li>
+            <li><a style="display: none" id="market" href="https://gnomestocks.com/market">Market</a></li>
+            <li><a style="display: none" id="weekly" href="https://gnomestocks.com/weekly">Weekly Evaluation</a></li>
+            <li><a class="active" style="display: none" id="monthly" href="https://gnomestocks.com/monthly">Monthly Evaluation</a></li>
+            <li><a href="https://gnomestocks.com/rules">Rules</a></li>
+            <li><a href="https://gnomestocks.com/auth/changepassword.html">Change Password</a></li>
+            <li><a onclick="signOut()">Sign Out</a></li>
+        </ul>
+        <div style="margin-left: 35%; text-align: left">
+            <div id=loading>
+                GnomeStock is loding...
             </div>
-            <div id="Alex">
-                Alex: <input id="AlexRating" type="number"/>
+            <div id="loaded" style="display: none">
+                <h1 id="header"></h1>
+                <p> How did you feel this month 0-100 (uniform distribution). Remember to consider the whole month and not just how you're currently doing.</p>
+                <p id="weekRatings"></p><br>
+                Your monthly rating: <input id="rating" type="number"/>
+                <br><br><br>
+                How would you say that each of the following people have done this month? (0-10)
+                <div id="Tom">
+                    Tom: <input id="TomRating" type="number"/>
+                </div>
+                <div id="Alex">
+                    Alex: <input id="AlexRating" type="number"/>
+                </div>
+                <div id="Mac">
+                    Mac: <input id="MacRating" type="number"/>
+                </div>
+                <div id="Jack">
+                    Jack <input id="JackRating" type="number"/>
+                </div>
+                <br><button onclick="submitMonthly()">Submit</button>
+                <br><p id="error" style="display:none">Try again idiot</p>
             </div>
-            <div id="Mac">
-                Mac: <input id="MacRating" type="number"/>
-            </div>
-            <div id="Jack">
-                Jack <input id="JackRating" type="number"/>
-            </div>
-            <br><button onclick="submitMonthly()">Submit</button>
-            <br><p id="error" style="display:none">Try again idiot</p>
         </div>
     </body>
     <script src="../eval.js"></script>

@@ -2,25 +2,51 @@
     <head>
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico" />
     <link rel="stylesheet" href="../stylesheet.css">
+    <script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+    <script>
+    // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyD4dfx-n90fWUgp9Vzw2liN6SZrWfiDqZQ",
+            authDomain: "gnomestock-gstk.firebaseapp.com",
+            databaseURL: "https://gnomestock-gstk.firebaseio.com",
+            projectId: "gnomestock-gstk",
+            storageBucket: "gnomestock-gstk.appspot.com",
+            messagingSenderId: "440727232988"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <title>
             GnomeStock 
         </title>
     </head>
     <body>
-        <h1> Rules </h1><br>
-        <p> 1. Prices will update at the end of every month and trading will be open for the first few days of every month. </p>
-        <p> 2. Weekly self-evaluations will be submitted every sunday with a 0-100 score.</p>
-        <p> 3. Monthly evaluations wil be submitted at the end of every month with a 0-100 self-evaluation and a 0-10 evaluation for each other gnome.</p>
-        <p> 4. Your total monthly rating (R) is calculated with this formula:<br>
-        R = 0.5 * (self monthly rating) + 0.15 * (average of self weekly ratings for that month) + 0.35 * (10 * (average of peer evaluations))</p>
-        <p> 5. Your new price will be calculated with this formula:<br>
-        Price (Rounded to nearest cent) = 2 ^ (R / 25) </p>
-        <p> 6. Everyone will start with $100.00 of buying power and zero stocks.</p>
-        <p> 7. Everyone is limited to only owning 2 shares of their own stock at one time. </p>
-        <p> 8. Your total portfolio value is simply calculated with this:<br>
-        Total value = Buying power + ($MAC price) * (# of shares of $MAC) + ($JACK price) * (# of shares of $JACK) + ... etc.</p>
-        <p> 9. If more than $10 are left uninvested during a trading period, there will be a 4% tax on the remaining money over $10</p>
-        <p><a href="https://gnomestocks.com/">Return to GnomeStock</a>
+        <ul>
+            <li><a href="https://gnomestocks.com/">Home</a></li>
+            <li><a style="display: none" id="market" href="https://gnomestocks.com/market">Market</a></li>
+            <li><a style="display: none" id="weekly" href="https://gnomestocks.com/weekly">Weekly Evaluation</a></li>
+            <li><a style="display: none" id="monthly" href="https://gnomestocks.com/monthly">Monthly Evaluation</a></li>
+            <li><a class="active" href="https://gnomestocks.com/rules">Rules</a></li>
+            <li><a href="https://gnomestocks.com/auth/changepassword.html">Change Password</a></li>
+            <li><a onclick="signOut()">Sign Out</a></li>
+        </ul>
+        <div style="margin-left : 35%; text-align: left">
+            <h1> Rules </h1><br>
+            <p> 1. Prices will update at the end of every month and trading will be open for the first few days of every month. </p>
+            <p> 2. Weekly self-evaluations will be submitted every sunday with a 0-100 score.</p>
+            <p> 3. Monthly evaluations wil be submitted at the end of every month with a 0-100 self-evaluation and a 0-10 evaluation for each other gnome.</p>
+            <p> 4. Your total monthly rating (R) is calculated with this formula:<br>
+            R = 0.5 * (self monthly rating) + 0.15 * (average of self weekly ratings for that month) + 0.35 * (10 * (average of peer evaluations))</p>
+            <p> 5. Your new price will be calculated with this formula:<br>
+            Price (Rounded to nearest cent) = 2 ^ (R / 25) </p>
+            <p> 6. Everyone will start with $100.00 of buying power and zero stocks.</p>
+            <p> 7. Everyone is limited to only owning 2 shares of their own stock at one time. </p>
+            <p> 8. Your total portfolio value is simply calculated with this:<br>
+            Total value = Buying power + ($MAC price) * (# of shares of $MAC) + ($JACK price) * (# of shares of $JACK) + ... etc.</p>
+            <p> 9. If more than $10 are left uninvested during a trading period, there will be a 4% tax on the remaining money over $10</p>
+            <p><a href="https://gnomestocks.com/">Return to GnomeStock</a>
+        </div>
     </body>
+    <script src="../app.js"></script>
 </html>
 

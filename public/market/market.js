@@ -200,3 +200,8 @@ var home = function() {
     window.location = "https://gnomestocks.com/";
 }
 
+var signOut = function() {
+    firebase.auth().signOut().catch(function(e) {
+       alert(e.messge); 
+    });
+}

@@ -36,6 +36,7 @@ var signOut = function() {
 }
 
 var displayLoadedPage = function() {
+    if (window.location.href.includes("404") || window.location.href.includes("rules")) return;
     document.getElementById("loading").style = "display: none";
     document.getElementById("loaded").style = "display: lol";
 }

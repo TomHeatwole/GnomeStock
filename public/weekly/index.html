@@ -22,16 +22,27 @@
         </title>
     </head>
     <body>
-        <div id=loading>
-            GnomeStock is loding...
-        </div>
-        <div id="loaded" style="display: none">
-            <h1 id="header"></h1>
-            <br>
-            <p> How did you feel this week 0-100 (uniform distribution). Remember to consider the whole week and not just how you're currently doing" </p>
-            <input id="rating" type="number"/>
-            <br><button onclick="submitWeekly()">Submit</button>
-            <br><p id="error" style="display:none">Try again idiot</p>
+        <ul>
+            <li><a href="https://gnomestocks.com/">Home</a></li>
+            <li><a style="display: none" id="market" href="https://gnomestocks.com/market">Market</a></li>
+            <li><a class="active" style="display: none" id="weekly" href="https://gnomestocks.com/weekly">Weekly Evaluation</a></li>
+            <li><a style="display: none" id="monthly" href="https://gnomestocks.com/monthly">Monthly Evaluation</a></li>
+            <li><a href="https://gnomestocks.com/rules">Rules</a></li>
+            <li><a href="https://gnomestocks.com/auth/changepassword.html">Change Password</a></li>
+            <li><a onclick="signOut()">Sign Out</a></li>
+        </ul>
+        <div style="margin-left: 35%; text-align: left">
+            <div id=loading>
+                GnomeStock is loding...
+            </div>
+            <div id="loaded" style="display: none">
+                <h1 id="header"></h1>
+                <br>
+                <p> How did you feel this week 0-100 (uniform distribution). Remember to consider the whole week and not just how you're currently doing" </p>
+                <input id="rating" type="number"/>
+                <br><button onclick="submitWeekly()">Submit</button>
+                <br><p id="error" style="display:none">Try again idiot</p>
+            </div>
         </div>
     </body>
     <script src="../eval.js"></script>

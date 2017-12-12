@@ -66,3 +66,10 @@ var displayLoadedPage = function() {
     document.getElementById("loading").style = "display: none";
     document.getElementById("loaded").style = "display: lol";
 }
+
+var signOut = function() {
+    firebase.auth().signOut().catch(function(e) {
+       alert(e.messge); 
+    });
+    window.location = "https://gnomestocks.com/auth/"
+}

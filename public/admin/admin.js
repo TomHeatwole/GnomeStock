@@ -268,6 +268,7 @@ var submitManualPermissions = function() {
         "/master/monthly" : perms[2].checked,
         "/master/market" : perms[3].checked
     }).then(function() {
+        console.log(perms);
         document.getElementById("successMessage").style = "display: lol";
     });
 }
@@ -276,4 +277,10 @@ var showLosers = function() {
     var loserString = "";
     for (var key in losers) if (losers[key]) loserString += key + " ";
     document.getElementById("losers").innerHTML = loserString;
+}
+
+var signOut = function() {
+    firebase.auth().signOut().catch(function(e) {
+       alert(e.messge); 
+    });
 }
