@@ -22,17 +22,21 @@
         </title>
     </head>
     <body>
+        <ul>
+            <li><a class="active" href="https://gnomestocks.com/">Home</a></li>
+            <li><a href="https://gnomestocks.com/market">Market</a></li>
+            <li><a href="https://gnomestocks.com/weekly">Weekly Evaluation</a></li>
+            <li><a href="https://gnomestocks.com/monthly">Monthly Evaluation</a></li>
+            <li><a href="https://gnomestocks.com/rules">Rules</a></li>
+            <li><a href="https://gnomestocks.com/auth/changepassword.html">Change Password</a></li>
+            <li><a onclick="signOut()">Sign Out</a></li>
+        </ul>
         <div id=loading>
             GnomeStock is loding...
         </div>
-        <div id="loaded" style="display: none">
+        <div id="loaded" style="display: none; margin-left:25%;padding:1px 16px;height:1000px;">
             <h1 id="hello">Hello, </h1><br>
-            <a id="weekly" style="display:none" href="http://gnomestocks.com/weekly">Complete weekly evaluation</a><br>
-            <a id="monthly" style="display:none" href="http://gnomestocks.com/monthly">Complete monthly evaluation</a><br>
-            <a id="market" style="display:none" href="http://gnomestocks.com/market/">GnomeStock Trading</a><br>
-            <br><button onclick="signOut()">Sign out</button><br>
-            <a href="https://gnomestocks.com/auth/changepassword.html">Change Password</a>
-            <a href="https://gnomestocks.com/rules/">Rules</a>
+            TODO: Rankings
         </div>
     </body>
     <script src="./app.js"></script>
