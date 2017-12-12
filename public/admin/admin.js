@@ -31,10 +31,18 @@ var getMasterValues = function() {
         marketOpen = master.val().market;
         wLow = master.val().wLow;
         wHigh = master.val().wHigh;
+        firebase.database().ref("master/monthNames").once("value").then(function(months) {
         document.getElementById("startWeek").innerHTML = "Start Week " + (weekIndex + 1);
         document.getElementById("endWeek").innerHTML = "End Week " + weekIndex;
         document.getElementById("startMonth").innerHTML = "Start Month " + (monthIndex + 1);
         document.getElementById("endMonth").innerHTML = "End Month " + monthIndex;
+            for (var mon in months.val()) (function(mon) {
+                firebase.database().ref("master/monthNames/" + mon).once("value").then(function(m) {
+                    if (m.val().month === monthIndex)
+                        document.getElementById("endMonth").innerHTML += " (" + m.val().name + ")";
+                });
+            })(mon);
+        });
         if (weekly)
             document.getElementById("endWeek").style = "display: lol";
         else
