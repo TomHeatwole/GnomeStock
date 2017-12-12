@@ -46,7 +46,7 @@ var getDataAndValidate = function(weekTemplate) {
                         weekString = m.val().name + " - Week " + (weekIndex - wHigh);
                         document.getElementById("header").innerHTML = weekString;
                     }
-                    if (moveOn) gdavp2(weekIndex);
+                    if (moveOn) gdavp2(weekTemplate);
                 });
             })(mon);
         });
@@ -66,7 +66,7 @@ var gdavp2 = function(weekTemplate) {
                                 (function(w) {
                                     firebase.database().ref("user/" + u + "/weekly/" + w + "/week").once("value").then(function(i) {
                                         if (i.val() === weekIndex) {
-                                            alert("You have already submitted an evaluation for week " + weekIndex);
+                                            alert("You have already submitted an evaluation for " + weekString);
                                             home();
                                         }
                                     });
@@ -78,7 +78,7 @@ var gdavp2 = function(weekTemplate) {
                                 (function(m) {
                                     firebase.database().ref("user/" + u + "/monthly/" + m + "/month").once("value").then(function(i) {
                                         if (i.val() === monthIndex) {
-                                            alert("You have already submitted an evaluation for month " + monthIndex);
+                                            alert("You have already submitted an evaluation for " + monthString);
                                             home();
                                         }
                                     });
