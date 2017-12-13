@@ -5,6 +5,7 @@ var monthIndex;
 
 firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
+        if (window.location.href.includes("404") || window.location.href.includes("rules")) return;
         user = u;
         getMasterValues();
         $("h1").text("Hello, " + u.displayName + "!");
