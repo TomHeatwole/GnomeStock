@@ -56,3 +56,23 @@ li a:hover:not(.active) {
 h1 {
     -webkit-margin-before: 0.00em;
 }
+
+/*tr:nth-child(even){background-color: #dcd0c0}
+tr:nth-child(odd){background-color: white}*/
+
+th {
+    background-color: #dcd0c0;
+}
+
+table {
+    border-collapse: collapse;
+    width: 50%;
+    text-align: left;
+    background-color: white;
+}
+
+th, td {
+    border-bottom: 1px solid #C0B283;
+    padding: 12px;
+}
+    

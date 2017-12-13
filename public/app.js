@@ -30,6 +30,8 @@ var getMasterValues = function() {
     });
 }       
 
+
+
 var signOut = function() {
     firebase.auth().signOut().catch(function(e) {
        alert(e.messge); 
