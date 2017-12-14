@@ -67,10 +67,9 @@ var populateStandings = function() {
     if (window.location.href.includes("404") || window.location.href.includes("rules")) return;
     var tie = -1;
     for (var i = 0; i < 4; i++) {
-        tie = -1;
         var row = document.createElement("tr");
         var place = (tie === -1) ? i + 1 : tie;
-        if (userData[i].total === userData[i + 1].total) tie = place;
+        tie = (userData[i].total === userData[i + 1].total) ? place : -1;
         var placeElement = document.createElement("td");
         var nameElement = document.createElement("td");
         var priceElement = document.createElement("td");
