@@ -25,7 +25,7 @@
         <ul>
             <li><a href="https://gnomestocks.com/">Home</a></li>
             <li><a style="display: none" id="market" href="https://gnomestocks.com/market">Market</a></li>
-            <li><a class="active" style="display: none" id="weekly" href="https://gnomestocks.com/daily">Daily Evaluation</a></li>
+            <li><a class="active" id="daily" href="https://gnomestocks.com/daily">Daily Evaluation</a></li>
             <li><a style="display: none" id="weekly" href="https://gnomestocks.com/weekly">Weekly Evaluation</a></li>
             <li><a style="display: none" id="monthly" href="https://gnomestocks.com/monthly">Monthly Evaluation</a></li>
             <li><a href="https://gnomestocks.com/rules">Rules</a></li>
@@ -37,9 +37,9 @@
                 GnomeStock is loding...
             </div>
             <div id="loaded" style="display: none">
-                <h1 id="header"></h1>
+                <h1 id="header">Daily Evaluation</h1>
                 <br>
-                <p> How did you feel today 0-100 (uniform distribution). Remember to consider the whole day and not just how you're currently doing" </p>
+                <p> How did you feel today 0-100 (uniform distribution). Remember to consider the whole day and not just how you're currently doing. </p>
                 <input id="rating" type="number"/>
                 <br><button onclick="submit()">Submit</button>
                 <br><p id="error" style="display:none">Try again idiot</p>

@@ -12,6 +12,16 @@ body {
     background-color: #e8e8e8;
     text-align: center;
     text-color: #373737;
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+h1 {
+    -webkit-margin-before: 0em;
+}
+
+.top {
+    -webkit-margin-before: 0em;
 }
 
 ul {
@@ -51,10 +61,6 @@ li a:hover:not(.active) {
     background-color: #373737;
     color: white;
     font-weight: bold;
-}
-
-h1 {
-    -webkit-margin-before: 0.00em;
 }
 
 /*tr:nth-child(even){background-color: #dcd0c0}
