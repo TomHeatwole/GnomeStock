@@ -33,22 +33,20 @@
             <li><a href="https://gnomestocks.com/auth/changepassword.html">Change Password</a></li>
             <li><a onclick="signOut()">Sign Out</a></li>
         </ul>
-        <div style="margin-left: 35$">
-            <div id=loading>
-                GnomeStock is loding...
-            </div>
-            <div id="loaded" style="display: none; text-align: center">
-                <h1 id="hello">Hello, </h1><br>
-                <h2 style= "margin-left: 35%; text-align: left"> Standings </h2>
-                <table id="standings" style="margin-left: 35%">
-                    <tr>
-                        <th> Place </th>
-                        <th> Gnome </th>
-                        <th> Price </th>
-                        <th> Portfolio Value </th>
-                    </tr>
-                </table>
-            </div>
+        <div id="loading">
+            GnomeStock is loding...
+        </div>
+        <div id="loaded" style="display: none; text-align: center">
+            <h1 id="hello" style="margin-left: 35%; text-align: left">Hello, </h1><br>
+            <h2 style= "margin-left: 35%; text-align: left"> Standings </h2>
+            <table id="standings" style="margin-left: 35%">
+                <tr>
+                    <th> Place </th>
+                    <th> Gnome </th>
+                    <th> Price </th>
+                    <th> Portfolio Value </th>
+                </tr>
+            </table>
         </div>
     </body>
     <script src="./app.js"></script>
