@@ -7,7 +7,6 @@ var masterData;
 
 firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
-        if (window.location.href.includes("404") || window.location.href.includes("rules")) return;
         user = u;
         getMasterValues();
         $("h1").text("Hello, " + u.displayName + "!");
@@ -28,6 +27,7 @@ var getMasterValues = function() {
             document.getElementById("monthly").style = "display: lol";
         if (master.val().market)
             document.getElementById("market").style = "display: lol";
+        if (window.location.href.includes("404") || window.location.href.includes("rules")) return;
         firebase.database().ref("user/").once("value").then(function(users) {
             var count = 0;
             userData = [];

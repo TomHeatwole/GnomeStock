@@ -59,7 +59,16 @@ firebase.auth().onAuthStateChanged(function(u) {
         if (window.location === "https://gnomestocks.com/auth/changepassword.html")
             window.location = "https://gnomestocks.com/auth/";
     }
+    if (!window.location.href.includes("password")) return;
+    firebase.database().ref("master").once("value").then(function(master) {
+        if (master.val().weekly)
+            document.getElementById("weekly").style = "display: lol";
+        if (master.val().monthly)
+            document.getElementById("monthly").style = "display: lol";
+        if (master.val().market)
+            document.getElementById("market").style = "display: lol";
     displayLoadedPage();
+    });
 });
 
 var displayLoadedPage = function() {

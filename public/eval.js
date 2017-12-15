@@ -34,6 +34,12 @@ var getDataAndValidate = function(weekTemplate) {
         monthIndex = master.val().month;
         wHigh = master.val().wHigh;
         wLow = master.val().wLow;
+        if (master.val().weekly)
+            document.getElementById("weekly").style = "display: lol";
+        if (master.val().monthly)
+            document.getElementById("monthly").style = "display: lol";
+        if (master.val().market)
+            document.getElementById("market").style = "display: lol";
         firebase.database().ref("master/monthNames").once("value").then(function(months) {
             for (var mon in months.val()) (function(mon) {
                 firebase.database().ref("master/monthNames/" + mon).once("value").then(function(m) {

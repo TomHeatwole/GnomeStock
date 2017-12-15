@@ -44,6 +44,12 @@ var getDataAndValidate = function() {
     firebase.database().ref("master").once("value").then(function(master) {
         weekIndex = master.val().week;
         monthIndex = master.val().month;
+        if (master.val().weekly)
+            document.getElementById("weekly").style = "display: lol";
+        if (master.val().monthly)
+            document.getElementById("monthly").style = "display: lol";
+        if (master.val().market)
+            document.getElementById("market").style = "display: lol";
         document.getElementsByTagName("Master")[3].innerHTML = monthIndex;
     });
     firebase.database().ref("user/").once('value').then(function(users) {

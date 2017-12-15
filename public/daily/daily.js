@@ -18,6 +18,16 @@ firebase.auth().onAuthStateChanged(function(u) {
 });
 
 var getData = function() {
+    firebase.database().ref("master/").once('value').then(function(master) {
+        weekIndex = master.val().week;
+        monthIndex = master.val().month;
+        if (master.val().weekly)
+            document.getElementById("weekly").style = "display: lol";
+        if (master.val().monthly)
+            document.getElementById("monthly").style = "display: lol";
+        if (master.val().market)
+            document.getElementById("market").style = "display: lol";
+    });
     firebase.database().ref("user/").once('value').then(function(users) {
         for (u in users.val()) {
             (function(u) {
