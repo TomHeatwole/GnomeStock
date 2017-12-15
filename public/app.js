@@ -68,6 +68,7 @@ var populateStandings = function() {
     var tie = -1;
     for (var i = 0; i < 4; i++) {
         var row = document.createElement("tr");
+        if (user.displayName === userData[i].name) row.style = "background-color: #FDFFC0";
         var place = (tie === -1) ? i + 1 : tie;
         tie = (userData[i].total === userData[i + 1].total) ? place : -1;
         var placeElement = document.createElement("td");
