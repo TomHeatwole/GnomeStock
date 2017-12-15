@@ -9,7 +9,8 @@ firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
         user = u;
         getMasterValues();
-        $("h1").text("Hello, " + u.displayName + "!");
+        if (!window.location.href.includes("rules"))
+            $("h1").text("Hello, " + u.displayName + "!");
         start(u);
     } else {
         window.location = "https://gnomestocks.com/auth/";  
