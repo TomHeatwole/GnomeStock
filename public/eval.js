@@ -10,6 +10,8 @@ var weekAverage = 0;
 var monthString;
 var wekString;
 
+// Logic for /monthly and /weekly. /daily is in daily/daily.js
+
 firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
         user = u;
@@ -72,6 +74,19 @@ var gdavp2 = function(weekTemplate) {
                                     });
                                 })(w);
                             }
+                            dailyRatings = "";
+                            var count = 0;
+                            for (var d in usr.val().daily) count++;
+                            for (var d in usr.val().daily) (function(d) {
+                                count--;
+                                firebase.database().ref("user/" + u + "/daily/" + d).once("value").then(function(i) {
+                                    dailyRatings += "<br>" + i.val();
+                                    if (count == 0) {
+                                        document.getElementById("dailyRatings").innerHTML = "For reference, here are the weekly ratings you have self-reported this month: <b>"
+                                            + dailyRatings + "</b>";
+                                    }
+                                });
+                            })(d);
                         } else {
                             document.getElementById(usr.val().name).style = "display: none";
                             for (var m in usr.val().monthly) {
@@ -136,8 +151,10 @@ var submitWeekly = function() {
             "week" : weekIndex,
             "rating" : parseInt(rating, 10)
         }).then(function() {
-            alert("You have successfully entered your weekly rating");
-            home();
+            firebase.database().ref("user/" + userKey + "/daily").remove().then(function() {
+                alert("You have successfully entered your weekly rating");
+                home();
+            });
         });
     } else
         document.getElementById("error").style = "display: lol; color: red";
