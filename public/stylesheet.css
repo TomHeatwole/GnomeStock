@@ -82,3 +82,7 @@ th, td {
     padding: 12px;
 }
     
+#loading {
+    margin-left: 35%;
+    text-align: left;
+}

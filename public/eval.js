@@ -9,6 +9,7 @@ var weekRatings;
 var weekAverage = 0;
 var monthString;
 var wekString;
+var wait = false;
 
 // Logic for /monthly and /weekly. /daily is in daily/daily.js
 
@@ -88,7 +89,7 @@ var gdavp2 = function(weekTemplate) {
                                 firebase.database().ref("user/" + u + "/daily/" + d).once("value").then(function(i) {
                                     dailyRatings += "<br>" + i.val();
                                     if (count == 0) {
-                                        document.getElementById("dailyRatings").innerHTML = "For reference, here are the weekly ratings you have self-reported this month: <b>"
+                                        document.getElementById("dailyRatings").innerHTML = "For reference, here are the daily ratings you have self-reported this week: <b>"
                                             + dailyRatings + "</b>";
                                     }
                                 });
@@ -151,6 +152,7 @@ var home = function() {
 }
 
 var submitWeekly = function() {
+    if (wait) return;
     var rating = document.getElementById("rating").value;
     if (!isNaN(rating) && isFinite(rating) && rating >= 0 && rating <= 100) {
         firebase.database().ref("user/" + userKey + "/weekly").push({
@@ -158,15 +160,45 @@ var submitWeekly = function() {
             "rating" : parseInt(rating, 10)
         }).then(function() {
             firebase.database().ref("user/" + userKey + "/daily").remove().then(function() {
-                alert("You have successfully entered your weekly rating");
-                home();
+                var count = 0;
+                var userCount = 0;
+                firebase.database().ref("user/").once("value").then(function(users) {
+                    for (var u in users.val()) (function(u) {
+                        firebase.database().ref("user/" + u + "/weekly").once("value").then(function(weekData) {
+                            userCount++;
+                            var weekCount = 0;
+                            if (userCount === 4)
+                                for (var w in weekData.val()) weekCount++;
+                            for (var w in weekData.val()) (function(w, userCount) {
+                                firebase.database().ref("user/" + u + "/weekly/" + w).once("value").then(function(i) {
+                                    if (i.val().week == weekIndex) {
+                                        count++;
+                                        if (count === 4) {
+                                            firebase.database().ref("master/").update({"weekly" : false});
+                                       }
+                                    }
+                                    weekCount--;
+                                    if (weekCount === 0) {
+                                        wait = false;
+                                        alert("You have successfully entered your weekly rating");
+                                        home();
+                                    }
+                                });
+                            })(w, userCount);
+                        }); 
+                    })(u);
+                });
             });
         });
-    } else
+    } else {
         document.getElementById("error").style = "display: lol; color: red";
+        wait = false;
+    }
 }
 
 var submitMonthly = function() {
+    if (wait) return;
+    wait = true;
     var postData = {};
     var error = false;
     var ratings = document.getElementsByTagName("input");
@@ -176,6 +208,7 @@ var submitMonthly = function() {
     if (isNaN(selfRating) || !isFinite(selfRating) || selfRating < 0 || selfRating > 100) {
         document.getElementById("error").style = "display: lol";
         error = true;
+        wait = false;
     }
     for (var i = 1; i < ratings.length; i++) {
         if (ratings[i].id === name + "Rating") continue;
@@ -191,6 +224,7 @@ var submitMonthly = function() {
     else {
         postData["month"] = monthIndex;
         firebase.database().ref("user/" + userKey + "/monthly").push(postData).then(function() {
+            wait = false;
             alert("Successfully recorded monthly evaluation");
             window.location = "https://gnomestocks.com/"
         });
