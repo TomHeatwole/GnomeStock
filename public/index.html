@@ -18,6 +18,7 @@
         firebase.initializeApp(config);
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
         <title>
             GnomeStock 
         </title>
@@ -39,7 +40,7 @@
         <div id="loaded" style="display: none; text-align: center">
             <h1 id="hello" style="margin-left: 35%; text-align: left">Hello, </h1><br>
             <h2 style= "margin-left: 35%; text-align: left"> Standings </h2>
-            <table id="standings" style="margin-left: 35%">
+            <table id="standings" style="margin-left: 35%;">
                 <tr>
                     <th> Place </th>
                     <th> Gnome </th>
@@ -47,6 +48,37 @@
                     <th> Portfolio Value </th>
                 </tr>
             </table>
+            <br><br>
+            <h2 style="margin-left: 35%; text-align: left"> Your Portfolio </h2>
+            <div style="margin-left: 35%; text-align: left">
+                <table style="width: 25%; float: left">
+                    <tr>
+                        <th> Stock </th>
+                        <th> Shares </th>
+                    </tr>
+                    <tr>
+                        <td> $TOM </td>
+                        <td> 2 ($7.81) </td>
+                    </tr>
+                    <tr>
+                        <td> $TOM </td>
+                        <td> 2 ($7.81) </td>
+                    </tr>
+                    <tr>
+                        <td> $TOM </td>
+                        <td> 2 ($7.81) </td>
+                    </tr>
+                    <tr>
+                        <td> $TOM </td>
+                        <td> 2 ($7.81) </td>
+                    </tr>
+                    <tr>
+                        <td> Total </td>
+                        <td> $100.00 </td>
+                    </tr>
+                </table>
+                <div id="chartContainer" style="width: 30%; margin-left: 5%; margin-right: 5%; float: left"></div>
+            </div>
         </div>
     </body>
     <script src="./app.js"></script>
