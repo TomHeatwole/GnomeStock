@@ -4,6 +4,7 @@ var weekIndex;
 var monthIndex;
 var userData;
 var masterData;
+var shares;
 
 firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
@@ -11,7 +12,6 @@ firebase.auth().onAuthStateChanged(function(u) {
         getMasterValues();
         if (!window.location.href.includes("rules"))
             $("h1").text("Hello, " + u.displayName + "!");
-        start(u);
     } else {
         window.location = "https://gnomestocks.com/auth/";  
     }
@@ -35,11 +35,13 @@ var getMasterValues = function() {
             userData.push({"total" : -1}); // dummy value to make sorting easier
             for (var u in users.val()) (function(u) {
                 firebase.database().ref("user/" + u).once("value").then(function(usr) {
+                    if (usr.val().name === user.displayName) shares = usr.val().shares;
                     count++;
                     var data = {
                         "name" : usr.val().name,
                         "price" : usr.val().price,
-                        "total" : usr.val().total
+                        "total" : usr.val().total,
+                        "ticker" : usr.val().ticker
                     }
                     for (var h in usr.val().history) (function(h) {
                         firebase.database().ref("user/" + u + "/history/" + h).once("value").then(function(history) {
@@ -76,7 +78,6 @@ var populateStandings = function() {
         var nameElement = document.createElement("td");
         var priceElement = document.createElement("td");
         var totalElement = document.createElement("td");
-        //<Tom>SECOND PARAM</Tom> <b>$<Tom>PRICE</Tom></b> <Tom>FIRST PARAM</Tom><br>
         var p1 = document.createElement(userData[i].name);
         var p2 = document.createElement(userData[i].name);
         var t1 = document.createElement(userData[i].name);
@@ -100,8 +101,56 @@ var populateStandings = function() {
         row.appendChild(totalElement);
         document.getElementById("standings").appendChild(row);
     }
+    populatePortfolio();
+}
+
+var populatePortfolio = function() {
+    var userTotal = 0;
+    for (var i = 0; i < 4; i++) {
+        if (userData[i].name === user.displayName) userTotal = userData[i].total;
+        var row = document.createElement("tr");
+        var stockName = document.createElement("a");
+        stockName.href = "https://gnomestocks.com/stocks/" + userData[i].name;
+        stockName.appendChild(document.createTextNode(userData[i].ticker));
+        var td1 = document.createElement("td");
+        var td2 = document.createElement("td");
+        td1.appendChild(stockName);
+        td2.appendChild(document.createTextNode(shares[userData[i].name] + 
+                    " ($" + dollarString(userData[i].price * shares[userData[i].name]) + ")"));
+        row.appendChild(td1);
+        row.appendChild(td2);
+        document.getElementById("portfolioTable").appendChild(row);
+    }
+    var totalRow = document.createElement("tr");
+    totalRow.style = "font-weight: bold";
+    var totalTd1 = document.createElement("td");
+    var totalTd2 = document.createElement("td");
+    totalTd1.appendChild(document.createTextNode("Total"));
+    totalTd2.appendChild(document.createTextNode("$" + dollarString(userTotal)));
+    totalRow.appendChild(totalTd1);
+    totalRow.appendChild(totalTd2);
+    document.getElementById("portfolioTable").appendChild(totalRow);
+    var chart = new CanvasJS.Chart("chartContainer", {
+        data: [{
+            type: "pie",
+            startAngle: 240,
+            yValueFormatString: "##0.00\"%\"",
+            indexLabel: "{label} {y}",
+            dataPoints: [
+                {y: 90, label: "$TOM"},
+                {y: 21, label: "$ALEX"},
+                {y: 19, label: "$MAC"},
+                {y: 35, label: "$JACK"},
+                {y: 5, label: "Uninvested"}
+            ]
+        }],
+        backgroundColor: "#e8e8e8",
+        height: 258 
+    });
+    chart.render();
     displayLoadedPage();
 }
+
 var signOut = function() {
     firebase.auth().signOut().catch(function(e) {
        alert(e.messge); 
@@ -112,27 +161,6 @@ var displayLoadedPage = function() {
     if (window.location.href.includes("404") || window.location.href.includes("rules")) return;
     document.getElementById("loading").style = "display: none";
     document.getElementById("loaded").style = "display: lol";
-}
-
-var start = function(user) {
-    var chart = new CanvasJS.Chart("chartContainer", {
-        data: [{
-            type: "pie",
-            startAngle: 240,
-            yValueFormatString: "##0.00\"%\"",
-            indexLabel: "{label} {y}",
-            dataPoints: [
-                {y: 79.45, label: "Google"},
-                {y: 7.31, label: "Bing"},
-                {y: 7.06, label: "Baidu"},
-                {y: 4.91, label: "Yahoo"},
-                {y: 1.26, label: "Others"}
-            ]
-        }],
-        backgroundColor: "#e8e8e8",
-        height: 258 
-    });
-    chart.render();
 }
 
 var dollarString = function(num) {
