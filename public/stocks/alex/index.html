@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico" />
-    <link rel="stylesheet" href="../stylesheet.css">
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.ico" />
+    <link rel="stylesheet" href="../../stylesheet.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
     <script>
     // Initialize Firebase
@@ -17,6 +18,7 @@
         firebase.initializeApp(config);
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
         <title>
             GnomeStock 
         </title>
@@ -24,29 +26,21 @@
     <body>
         <ul>
             <li><a href="https://gnomestocks.com/">Home</a></li>
-            <li><a id="stocks" href="https://gnomestocks.com/stocks">Stocks</a></li>
+            <li><a class="active" id="stocks" href="https://gnomestocks.com/stocks">Stocks</a></li>
             <li><a style="display: none" id="market" href="https://gnomestocks.com/market">Market</a></li>
             <li><a id="daily" href="https://gnomestocks.com/daily">Daily Evaluation</a></li>
             <li><a style="display: none" id="weekly" href="https://gnomestocks.com/weekly">Weekly Evaluation</a></li>
             <li><a style="display: none" id="monthly" href="https://gnomestocks.com/monthly">Monthly Evaluation</a></li>
             <li><a href="https://gnomestocks.com/rules">Rules</a></li>
-            <li><a class="active" href="https://gnomestocks.com/auth/changepassword.html">Change Password</a></li>
+            <li><a href="https://gnomestocks.com/auth/changepassword.html">Change Password</a></li>
             <li><a onclick="signOut()">Sign Out</a></li>
         </ul>
         <div id="loading">
             GnomeStock is loding...
         </div>
-        <div id="loaded" style="display: none">
-            New Password: <input type="password" id="pass1"></input><br>
-            Re-type new password: <input type="password" id="pass2"></input>
-            <button onclick="auth.changePassword()">Update</button>
-            <div id="success" style = "display: none">
-                Your password has been updated.<br>
-            </div>  
-            <br><br>
-            <a href="https://gnomestocks.com">Return to GnomeStock</a>
+        <div id="loaded" style="display: none; text-align: center">
+            TOOD: populate this file
         </div>
     </body>
-    <script src="./auth.js"></script>
+    <script src="../stocks.js"></script>
 </html>
-
