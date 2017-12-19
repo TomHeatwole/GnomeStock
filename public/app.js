@@ -5,6 +5,7 @@ var monthIndex;
 var userData;
 var masterData;
 var shares;
+var bp;
 
 firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
@@ -35,7 +36,10 @@ var getMasterValues = function() {
             userData.push({"total" : -1}); // dummy value to make sorting easier
             for (var u in users.val()) (function(u) {
                 firebase.database().ref("user/" + u).once("value").then(function(usr) {
-                    if (usr.val().name === user.displayName) shares = usr.val().shares;
+                    if (usr.val().name === user.displayName) {
+                        shares = usr.val().shares;
+                        bp = usr.val().bp;
+                    }
                     count++;
                     var data = {
                         "name" : usr.val().name,
@@ -125,6 +129,15 @@ var populatePortfolio = function() {
         row.appendChild(td3);
         document.getElementById("portfolioTable").appendChild(row);
     }
+    var bpRow = document.createElement("tr");
+    var bp1 = document.createElement("td");
+    var bp2 = document.createElement("td");
+    var bp3 = document.createElement("td");
+    bp1.innerHTML = "Uninvested";
+    bp3.innerHTML = "$" + dollarString(bp);
+    bpRow.appendChild(bp1);
+    bpRow.appendChild(bp2);
+    bpRow.appendChild(bp3);
     var totalRow = document.createElement("tr");
     totalRow.style = "font-weight: bold";
     var totalTd1 = document.createElement("td");
@@ -136,6 +149,7 @@ var populatePortfolio = function() {
     totalRow.appendChild(totalTd1);
     totalRow.appendChild(totalTd2);
     totalRow.appendChild(totalTd3);
+    document.getElementById("portfolioTable").appendChild(bpRow);
     document.getElementById("portfolioTable").appendChild(totalRow);
     var chart = new CanvasJS.Chart("chartContainer", {
         data: [{
@@ -152,7 +166,7 @@ var populatePortfolio = function() {
             ]
         }],
         backgroundColor: "#e8e8e8",
-        height: 258 
+        height: 301 
     });
     chart.render();
     displayLoadedPage();
