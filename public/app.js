@@ -109,9 +109,9 @@ var populateStandings = function() {
 }
 
 var populatePortfolio = function() {
-    var userTotal = 0;
+    var userIndex = 0;
     for (var i = 0; i < 4; i++) {
-        if (userData[i].name === user.displayName) userTotal = userData[i].total;
+        if (userData[i].name === user.displayName) userIndex = i;
         var row = document.createElement("tr");
         var stockName = document.createElement("a");
         stockName.href = "https://gnomestocks.com/stocks/" + userData[i].name;
@@ -143,25 +143,32 @@ var populatePortfolio = function() {
     var totalTd3 = document.createElement("td");
     totalTd1.appendChild(document.createTextNode("Total"));
     //totalTd2.appendChild(document.createTextNode(totalShares));
-    totalTd3.appendChild(document.createTextNode("$" + dollarString(userTotal)));
+    totalTd3.appendChild(document.createTextNode("$" + dollarString(userData[userIndex].total)));
     totalRow.appendChild(totalTd1);
     totalRow.appendChild(totalTd2);
     totalRow.appendChild(totalTd3);
     document.getElementById("portfolioTable").appendChild(bpRow);
     document.getElementById("portfolioTable").appendChild(totalRow);
+    var chartDataPoints = [];
+    for (var i = 0; i < 4; i++) {
+        if (shares[userData[i].name] !== 0)
+            chartDataPoints.push({
+                y : 100 * (userData[i].price * shares[userData[i].name]) / userData[userIndex].total,
+                label: userData[i].ticker
+            });
+    }
+    if (bp !== 0)
+        chartDataPoints.push({
+            y: bp * 100 / userData[userIndex].total,
+            label: "Uninvested"
+        });
     var chart = new CanvasJS.Chart("chartContainer", {
         data: [{
             type: "pie",
             startAngle: 240,
             yValueFormatString: "##0.00\"%\"",
             indexLabel: "{label} {y}",
-            dataPoints: [
-                {y: 90, label: "$TOM"},
-                {y: 21, label: "$ALEX"},
-                {y: 19, label: "$MAC"},
-                {y: 35, label: "$JACK"},
-                {y: 5, label: "Uninvested"}
-            ]
+            dataPoints: chartDataPoints
         }],
         backgroundColor: "#e8e8e8",
         height: 301 
