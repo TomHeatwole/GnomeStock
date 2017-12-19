@@ -110,9 +110,7 @@ var populateStandings = function() {
 
 var populatePortfolio = function() {
     var userTotal = 0;
-    var totalShares = 0;
     for (var i = 0; i < 4; i++) {
-        totalShares += shares[userData[i].name];
         if (userData[i].name === user.displayName) userTotal = userData[i].total;
         var row = document.createElement("tr");
         var stockName = document.createElement("a");
@@ -144,7 +142,7 @@ var populatePortfolio = function() {
     var totalTd2 = document.createElement("td");
     var totalTd3 = document.createElement("td");
     totalTd1.appendChild(document.createTextNode("Total"));
-    totalTd2.appendChild(document.createTextNode(totalShares));
+    //totalTd2.appendChild(document.createTextNode(totalShares));
     totalTd3.appendChild(document.createTextNode("$" + dollarString(userTotal)));
     totalRow.appendChild(totalTd1);
     totalRow.appendChild(totalTd2);
