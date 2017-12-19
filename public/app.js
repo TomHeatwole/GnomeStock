@@ -110,7 +110,11 @@ var populateStandings = function() {
 
 var populatePortfolio = function() {
     var userIndex = 0;
+    var orderUserData = [];
+    orderUserData.push({value : -1});
     for (var i = 0; i < 4; i++) {
+        var value = userData[i].price * shares[userData[i].name];
+        userData[i].value = value;
         if (userData[i].name === user.displayName) userIndex = i;
         var row = document.createElement("tr");
         var stockName = document.createElement("a");
@@ -121,12 +125,18 @@ var populatePortfolio = function() {
         var td3 = document.createElement("td");
         td1.appendChild(stockName);
         td2.appendChild(document.createTextNode(shares[userData[i].name]));
-        td3.appendChild(document.createTextNode("$" + dollarString(userData[i].price * shares[userData[i].name])));
+        td3.appendChild(document.createTextNode("$" + dollarString(value)));
         row.appendChild(td1);
         row.appendChild(td2);
         row.appendChild(td3);
         document.getElementById("portfolioTable").appendChild(row);
+        for (var j = 0; j < orderUserData.length; j++)
+            if (value >= orderUserData[j].value) {
+                orderUserData.splice(j, 0, userData[i]);
+                break;
+            }
     }
+    userData = orderUserData;
     var bpRow = document.createElement("tr");
     var bp1 = document.createElement("td");
     var bp2 = document.createElement("td");
@@ -149,19 +159,24 @@ var populatePortfolio = function() {
     totalRow.appendChild(totalTd3);
     document.getElementById("portfolioTable").appendChild(bpRow);
     document.getElementById("portfolioTable").appendChild(totalRow);
+    if (bp !== 0) {
+        for (var i = 0; i < 4; i++)
+            if (bp > userData[i].value) {
+                userData.splice(i, 0, {
+                    value : bp,
+                    ticker: "Uninvested"
+                });
+                break;
+            }
+    }
     var chartDataPoints = [];
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 5; i++) {
         if (shares[userData[i].name] !== 0)
             chartDataPoints.push({
-                y : 100 * (userData[i].price * shares[userData[i].name]) / userData[userIndex].total,
+                y : 100 * userData[i].value / userData[userIndex].total,
                 label: userData[i].ticker
             });
     }
-    if (bp !== 0)
-        chartDataPoints.push({
-            y: bp * 100 / userData[userIndex].total,
-            label: "Uninvested"
-        });
     var chart = new CanvasJS.Chart("chartContainer", {
         data: [{
             type: "pie",
