@@ -106,7 +106,9 @@ var populateStandings = function() {
 
 var populatePortfolio = function() {
     var userTotal = 0;
+    var totalShares = 0;
     for (var i = 0; i < 4; i++) {
+        totalShares += shares[userData[i].name];
         if (userData[i].name === user.displayName) userTotal = userData[i].total;
         var row = document.createElement("tr");
         var stockName = document.createElement("a");
@@ -114,21 +116,26 @@ var populatePortfolio = function() {
         stockName.appendChild(document.createTextNode(userData[i].ticker));
         var td1 = document.createElement("td");
         var td2 = document.createElement("td");
+        var td3 = document.createElement("td");
         td1.appendChild(stockName);
-        td2.appendChild(document.createTextNode(shares[userData[i].name] + 
-                    " ($" + dollarString(userData[i].price * shares[userData[i].name]) + ")"));
+        td2.appendChild(document.createTextNode(shares[userData[i].name]));
+        td3.appendChild(document.createTextNode("$" + dollarString(userData[i].price * shares[userData[i].name])));
         row.appendChild(td1);
         row.appendChild(td2);
+        row.appendChild(td3);
         document.getElementById("portfolioTable").appendChild(row);
     }
     var totalRow = document.createElement("tr");
     totalRow.style = "font-weight: bold";
     var totalTd1 = document.createElement("td");
     var totalTd2 = document.createElement("td");
+    var totalTd3 = document.createElement("td");
     totalTd1.appendChild(document.createTextNode("Total"));
-    totalTd2.appendChild(document.createTextNode("$" + dollarString(userTotal)));
+    totalTd2.appendChild(document.createTextNode(totalShares));
+    totalTd3.appendChild(document.createTextNode("$" + dollarString(userTotal)));
     totalRow.appendChild(totalTd1);
     totalRow.appendChild(totalTd2);
+    totalRow.appendChild(totalTd3);
     document.getElementById("portfolioTable").appendChild(totalRow);
     var chart = new CanvasJS.Chart("chartContainer", {
         data: [{
