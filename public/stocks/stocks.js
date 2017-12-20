@@ -82,33 +82,32 @@ var populate = function() {
     populateChangeString(historyData[userOnPage.name][monthIndex - 1].price, userOnPage.price, lols[3], lols[1]);
     displayLoadedPage();
     var c1data = [];
-    console.log(convertMonthString("December 2018"));
+    for (var i = 0; i <= monthIndex; i++) {
+        c1data.push({
+            y : historyData[userOnPage.name][i].price / 100,
+            label: convertMonthString(monthNames[i]),
+            monthName: monthNames[i],
+            dollarString: dollarString(historyData[userOnPage.name][i].price),
+        });
+    }
     var chart1 = new CanvasJS.Chart("chartContainer1", {
         animationEnabled: true,
         theme: "light2",
+        toolTip: {
+            content: "{monthName}: ${dollarString}",
+        },
         axisY: {
             includeZero: false,
-            title: "$"
+            labelFormatter: function(e) {
+                return "$" + dollarString(Math.round(100 * e.value));
+            }
         },
         axisX: {
             title: "Month"
         },
-        data: [{        
-            type: "line",       
-            dataPoints: [
-                { y: 450, label: "11/17" },
-                { y: 414},
-                { y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
-                { y: 460 },
-                { y: 450 },
-                { y: 500 },
-                { y: 480 },
-                { y: 480 },
-                { y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
-                { y: 500 },
-                { y: 480 },
-                { y: 510 }
-            ]
+        data: [{
+            type : "line",
+            dataPoints: c1data
         }]
     });
     lols[4].innerHTML = userOnPage.name + "'s Portfolio Value";
