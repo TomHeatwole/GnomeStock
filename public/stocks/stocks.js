@@ -150,7 +150,9 @@ var populate = function() {
     var a = userOnPage.shares.Alex;
     var j = userOnPage.shares.Jack;
     for (var i = monthIndex; i >= 0; i--) {
+        var changes = historyData[userOnPage.name][i].changes;
         var row = document.createElement("tr");
+        row.style.height = "97px";
         var d1 = document.createElement("td");
         var d2 = document.createElement("td");
         var d3 = document.createElement("td");
@@ -169,7 +171,6 @@ var populate = function() {
             d2.style = "font-style: italic";
             d3.style = "font-style: italic";
         } else {
-            var changes = historyData[userOnPage.name][i].changes;
             var changeString = "";
             if (changes["Mac"] !== 0) changeString += (changes["Mac"] < 0) ? "Sold " + -changes["Mac"] + " shares of $MAC<br>" : "Bought " + changes["Mac"] + " shares of $MAC<br>";
             if (changes["Tom"] !== 0) changeString += (changes["Tom"] < 0) ? "Sold " + -changes["Tom"] + " shares of $TOM<br>" : "Bought " + changes["Tom"] + " shares of $TOM<br>";
@@ -183,10 +184,12 @@ var populate = function() {
                          + "$ALEX: " + a + "<br>"
                          + "$JACK: " + j + "<br>"
         }
-        m -= changes["Mac"];
-        t -= changes["Tom"];
-        j -= changes["Jack"];
-        a -= changes["Alex"];
+        if (i !== 0) {
+            m -= changes["Mac"];
+            t -= changes["Tom"];
+            j -= changes["Jack"];
+            a -= changes["Alex"];
+        }
         var arrow = document.createElement("rofl");
         var amount = document.createTextNode(" $" + dollarString(historyData[userOnPage.name][i].total) + " ");
         var change = document.createElement("rofl");
