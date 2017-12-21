@@ -145,34 +145,38 @@ var populate = function() {
     chart1.render();
     chart2.render();
     lols[8].innerHTML = userOnPage.name + "'s Trading History";
-    for (var i = monthIndex; i > 0; i--) {
+    for (var i = monthIndex; i >= 0; i--) {
         var row = document.createElement("tr");
+        row.style.height = "97px";
         var d1 = document.createElement("td");
         var d2 = document.createElement("td");
         var d3 = document.createElement("td");
-        d1.innerHTML = monthNames[i];
-        if (i === monthIndex && userOnPage.name != loggedInUser.name) {
+        d1.innerHTML = monthNames[i + 1];
+        if (i === monthIndex && userOnPage.name !== loggedInUser.name) {
             d2.innerHTML = "Hidden until end of month";
             d2.style = "font-style: italic";
         } else if (i != 0) {
             var changes = historyData[userOnPage.name][i].changes;
             var changeString = "";
-            if (changes["Tom"] !== 0) changeString += (changes["Tom"] < 0) ? "Sold " + -changes["Tom"] + " shares of $TOM" : "Bought " + changes["Tom"] + " shares of $TOM<br>";
-            if (changes["Mac"] !== 0) changeString += (changes["Mac"] < 0) ? "Sold " + -changes["Mac"] + " shares of $MAC" : "Bought " + changes["Mac"] + " shares of $MAC<br>";
-            if (changes["Alex"] !== 0) changeString += (changes["Alex"] < 0) ? "Sold " + -changes["Alex"] + " shares of $ALEX" : "Bought " + changes["Alex"] + " shares of $ALEX<br>";
-            if (changes["Jack"] !== 0) changeString += (changes["Jack"] < 0) ? "Sold " + -changes["Jack"] + " shares of $JACK" : "Bought " + changes["Jack"] + " shares of $JACK<br>";
+            if (changes["Tom"] !== 0) changeString += (changes["Tom"] < 0) ? "Sold " + -changes["Tom"] + " shares of $TOM<br>" : "Bought " + changes["Tom"] + " shares of $TOM<br>";
+            if (changes["Mac"] !== 0) changeString += (changes["Mac"] < 0) ? "Sold " + -changes["Mac"] + " shares of $MAC<br>" : "Bought " + changes["Mac"] + " shares of $MAC<br>";
+            if (changes["Alex"] !== 0) changeString += (changes["Alex"] < 0) ? "Sold " + -changes["Alex"] + " shares of $ALEX<br>" : "Bought " + changes["Alex"] + " shares of $ALEX<br>";
+            if (changes["Jack"] !== 0) changeString += (changes["Jack"] < 0) ? "Sold " + -changes["Jack"] + " shares of $JACK<br" : "Bought " + changes["Jack"] + " shares of $JACK<br>";
             if (changeString === "") changeString = "Did not trade";
             else changeString = changeString.substring(0, changeString.length - 4);
             d2.innerHTML = changeString;
-        }
+        } else d2.innerHTML = "Did not trade";
         var arrow = document.createElement("rofl");
         var amount = document.createTextNode(" $" + dollarString(historyData[userOnPage.name][i].total) + " ");
         var change = document.createElement("rofl");
-        var previous = (i === 0) ? 10000 : historyData[userOnPage.name][i - 1].total;
-        populateChangeString(previous, historyData[userOnPage.name][i].total, change, arrow);
-        d3.appendChild(arrow);
-        d3.appendChild(amount);
-        d3.appendChild(change);
+        var previous = (i === 0) ? 10000 : historyData[userOnPage.name][i].total;
+        if (i === monthIndex) d3.innerHTML = "TBD";
+        else {
+            populateChangeString(previous, historyData[userOnPage.name][i + 1].total, change, arrow);
+            d3.appendChild(arrow);
+            d3.appendChild(amount);
+            d3.appendChild(change);
+        }
         row.appendChild(d1);
         row.appendChild(d2);
         row.appendChild(d3);
