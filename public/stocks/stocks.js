@@ -145,41 +145,63 @@ var populate = function() {
     chart1.render();
     chart2.render();
     lols[8].innerHTML = userOnPage.name + "'s Trading History";
+    var m = userOnPage.shares.Mac;
+    var t = userOnPage.shares.Tom;
+    var a = userOnPage.shares.Alex;
+    var j = userOnPage.shares.Jack;
     for (var i = monthIndex; i >= 0; i--) {
         var row = document.createElement("tr");
-        row.style.height = "97px";
         var d1 = document.createElement("td");
         var d2 = document.createElement("td");
         var d3 = document.createElement("td");
+        var d4 = document.createElement("td");
         d1.innerHTML = monthNames[i + 1];
-        if (i === monthIndex && userOnPage.name !== loggedInUser.name) {
+        if (i === 0) {
+            d2.innerHTML = "Did not trade";
+            d3.innerHTML = "$MAC: " + m + "<br>"
+                         + "$TOM: " + t + "<br>"
+                         + "$ALEX: " + a + "<br>"
+                         + "$JACK: " + j + "<br>"
+        }
+        else if (i === monthIndex && userOnPage.name !== loggedInUser.name) {
             d2.innerHTML = "Hidden until end of month";
+            d3.innerHTML = "Hidden until end of month";
             d2.style = "font-style: italic";
-        } else if (i != 0) {
+            d3.style = "font-style: italic";
+        } else {
             var changes = historyData[userOnPage.name][i].changes;
             var changeString = "";
-            if (changes["Tom"] !== 0) changeString += (changes["Tom"] < 0) ? "Sold " + -changes["Tom"] + " shares of $TOM<br>" : "Bought " + changes["Tom"] + " shares of $TOM<br>";
             if (changes["Mac"] !== 0) changeString += (changes["Mac"] < 0) ? "Sold " + -changes["Mac"] + " shares of $MAC<br>" : "Bought " + changes["Mac"] + " shares of $MAC<br>";
+            if (changes["Tom"] !== 0) changeString += (changes["Tom"] < 0) ? "Sold " + -changes["Tom"] + " shares of $TOM<br>" : "Bought " + changes["Tom"] + " shares of $TOM<br>";
             if (changes["Alex"] !== 0) changeString += (changes["Alex"] < 0) ? "Sold " + -changes["Alex"] + " shares of $ALEX<br>" : "Bought " + changes["Alex"] + " shares of $ALEX<br>";
             if (changes["Jack"] !== 0) changeString += (changes["Jack"] < 0) ? "Sold " + -changes["Jack"] + " shares of $JACK<br" : "Bought " + changes["Jack"] + " shares of $JACK<br>";
             if (changeString === "") changeString = "Did not trade";
             else changeString = changeString.substring(0, changeString.length - 4);
             d2.innerHTML = changeString;
-        } else d2.innerHTML = "Did not trade";
+            d3.innerHTML = "$MAC: " + m + "<br>"
+                         + "$TOM: " + t + "<br>"
+                         + "$ALEX: " + a + "<br>"
+                         + "$JACK: " + j + "<br>"
+        }
+        m -= changes["Mac"];
+        t -= changes["Tom"];
+        j -= changes["Jack"];
+        a -= changes["Alex"];
         var arrow = document.createElement("rofl");
         var amount = document.createTextNode(" $" + dollarString(historyData[userOnPage.name][i].total) + " ");
         var change = document.createElement("rofl");
         var previous = (i === 0) ? 10000 : historyData[userOnPage.name][i].total;
-        if (i === monthIndex) d3.innerHTML = "TBD";
+        if (i === monthIndex) d4.innerHTML = "TBD";
         else {
             populateChangeString(previous, historyData[userOnPage.name][i + 1].total, change, arrow);
-            d3.appendChild(arrow);
-            d3.appendChild(amount);
-            d3.appendChild(change);
+            d4.appendChild(arrow);
+            d4.appendChild(amount);
+            d4.appendChild(change);
         }
         row.appendChild(d1);
         row.appendChild(d2);
         row.appendChild(d3);
+        row.appendChild(d4);
         document.getElementsByTagName("table")[0].appendChild(row);
     }
 }
