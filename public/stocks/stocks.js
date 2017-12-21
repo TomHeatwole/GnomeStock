@@ -29,7 +29,7 @@ var getHistory = function() {
         var count = 0;
         for (var u in users.val()) (function(u) {
             firebase.database().ref("user/" + u).once("value").then(function(usr) {
-                if (usr.val().name.toLowerCase() === user.displayName) loggedInUser = usr.val();
+                if (usr.val().name === user.displayName) loggedInUser = usr.val();
                 if (usr.val().name.toLowerCase() === userOnPageName) userOnPage = usr.val();
                 firebase.database().ref("user/" + u + "/history/").once("value").then(function(his) {
                 count++;
@@ -64,11 +64,11 @@ var getDataAndValidate = function() {
                 firebase.database().ref("master/monthNames/" + m).once("value").then(function(month) {
                     count--;    
                     monthNames[month.val().month] = month.val().name;
-                    if (count == 0) 
-                        if (userOnPage === undefined)
-                            displayLoadedPage();
-                        else
+                    if (count == 0)  {
+                        displayLoadedPage();
+                        if (userOnPage !== undefined)
                             populate();
+                    }
                 });
             })(m);
     });
@@ -80,21 +80,33 @@ var populate = function() {
     lols[0].innerHTML = userOnPage.ticker;
     lols[2].innerHTML = "$" + dollarString(userOnPage.price);
     populateChangeString(historyData[userOnPage.name][monthIndex - 1].price, userOnPage.price, lols[3], lols[1]);
-    displayLoadedPage();
     var c1data = [];
-    for (var i = 0; i <= monthIndex; i++) {
+    var c2data = [];
+    lols[4].innerHTML = userOnPage.name + "'s Portfolio Value";
+    lols[6].innerHTML = "$" + dollarString(userOnPage.total);
+    populateChangeString(historyData[userOnPage.name][monthIndex - 1].total, userOnPage.total, lols[7], lols[5]);
+    for (var i = 0; i <= monthIndex; i++) { //TODO: Make this start at 1 
         c1data.push({
             y : historyData[userOnPage.name][i].price / 100,
             label: convertMonthString(monthNames[i]),
-            monthName: monthNames[i],
             dollarString: dollarString(historyData[userOnPage.name][i].price),
+            monthName: monthNames[i],
+            color: document.getElementsByTagName("lol")[1].style.color,
+        });
+        c2data.push({
+            y : historyData[userOnPage.name][i].total / 100,
+            label: convertMonthString(monthNames[i]),
+            dollarString: dollarString(historyData[userOnPage.name][i].total),
+            monthName: monthNames[i],
+            color: document.getElementsByTagName("lol")[5].style.color
         });
     }
+    var count = 0;
     var chart1 = new CanvasJS.Chart("chartContainer1", {
         animationEnabled: true,
         theme: "light2",
         toolTip: {
-            content: "{monthName}: ${dollarString}",
+            content: "{monthName}: ${dollarString}</rofl>"  
         },
         axisY: {
             includeZero: false,
@@ -110,39 +122,62 @@ var populate = function() {
             dataPoints: c1data
         }]
     });
-    lols[4].innerHTML = userOnPage.name + "'s Portfolio Value";
-    lols[6].innerHTML = "$" + dollarString(userOnPage.total);
-    populateChangeString(historyData[userOnPage.name][monthIndex - 1].total, userOnPage.total, lols[7], lols[5]);
-    chart1.render();
     var chart2 = new CanvasJS.Chart("chartContainer2", {
         animationEnabled: true,
         theme: "light2",
-        axisY:{
-            includeZero: false
+        toolTip: {
+            content: "{monthName}: ${dollarString}</rofl>"  
         },
- //       yValueFormatString: "##0.00\"%\"",
- //       indexLabel: "{label} {y}",
-        data: [{        
-            type: "line",       
-            dataPoints: [
-                { y: 450 },
-                { y: 414},
-                { y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
-                { y: 460 },
-                { y: 450 },
-                { y: 500 },
-                { y: 480 },
-                { y: 480 },
-                { y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
-                { y: 500 },
-                { y: 480 },
-                { y: 510 }
-            ]
+        axisY: {
+            includeZero: false,
+            labelFormatter: function(e) {
+                return "$" + dollarString(Math.round(100 * e.value));
+            }
+        },
+        axisX: {
+            title: "Month"
+        },
+        data: [{
+            type : "line",
+            dataPoints: c2data
         }]
     });
+    chart1.render();
     chart2.render();
-
     lols[8].innerHTML = userOnPage.name + "'s Trading History";
+    for (var i = monthIndex; i > 0; i--) {
+        var row = document.createElement("tr");
+        var d1 = document.createElement("td");
+        var d2 = document.createElement("td");
+        var d3 = document.createElement("td");
+        d1.innerHTML = monthNames[i];
+        if (i === monthIndex && userOnPage.name != loggedInUser.name) {
+            d2.innerHTML = "Hidden until end of month";
+            d2.style = "font-style: italic";
+        } else if (i != 0) {
+            var changes = historyData[userOnPage.name][i].changes;
+            var changeString = "";
+            if (changes["Tom"] !== 0) changeString += (changes["Tom"] < 0) ? "Sold " + -changes["Tom"] + " shares of $TOM" : "Bought " + changes["Tom"] + " shares of $TOM<br>";
+            if (changes["Mac"] !== 0) changeString += (changes["Mac"] < 0) ? "Sold " + -changes["Mac"] + " shares of $MAC" : "Bought " + changes["Mac"] + " shares of $MAC<br>";
+            if (changes["Alex"] !== 0) changeString += (changes["Alex"] < 0) ? "Sold " + -changes["Alex"] + " shares of $ALEX" : "Bought " + changes["Alex"] + " shares of $ALEX<br>";
+            if (changes["Jack"] !== 0) changeString += (changes["Jack"] < 0) ? "Sold " + -changes["Jack"] + " shares of $JACK" : "Bought " + changes["Jack"] + " shares of $JACK<br>";
+            if (changeString === "") changeString = "Did not trade";
+            else changeString = changeString.substring(0, changeString.length - 4);
+            d2.innerHTML = changeString;
+        }
+        var arrow = document.createElement("rofl");
+        var amount = document.createTextNode(" $" + dollarString(historyData[userOnPage.name][i].total) + " ");
+        var change = document.createElement("rofl");
+        var previous = (i === 0) ? 10000 : historyData[userOnPage.name][i - 1].total;
+        populateChangeString(previous, historyData[userOnPage.name][i].total, change, arrow);
+        d3.appendChild(arrow);
+        d3.appendChild(amount);
+        d3.appendChild(change);
+        row.appendChild(d1);
+        row.appendChild(d2);
+        row.appendChild(d3);
+        document.getElementsByTagName("table")[0].appendChild(row);
+    }
 }
 
 var displayLoadedPage = function() {
@@ -221,4 +256,3 @@ var monthNameLibrary = {
 var convertMonthString = function(monthName) {
     return monthNameLibrary[monthName.split(" ")[0]] + "/" + monthName.split(" ")[1].substring(2);
 }
-
