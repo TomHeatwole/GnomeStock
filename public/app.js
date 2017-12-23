@@ -186,6 +186,7 @@ var populatePortfolio = function() {
             dataPoints: chartDataPoints
         }],
         backgroundColor: "#e8e8e8",
+        animationEnabled: true,
         height: 301 
     });
     chart.render();
