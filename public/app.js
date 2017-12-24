@@ -10,9 +10,10 @@ var bp;
 firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
         user = u;
-        getMasterValues();
-        if (!window.location.href.includes("rules"))
+        if (document.getElementsByTagName("h1")[0].innerHTML.charAt(0) === 'H') {
             $("h1").text("Hello, " + u.displayName + "!");
+            getMasterValues();
+        }
     } else {
         window.location = "https://gnomestocks.com/auth/";  
     }

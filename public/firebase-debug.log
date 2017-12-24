@@ -1,0 +1,35 @@
+[debug] [2017-12-24T18:19:59.664Z] ----------------------------------------------------------------------
+[debug] [2017-12-24T18:19:59.666Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2017-12-24T18:19:59.666Z] CLI Version:   3.15.3
+[debug] [2017-12-24T18:19:59.666Z] Platform:      linux
+[debug] [2017-12-24T18:19:59.666Z] Node Version:  v9.2.0
+[debug] [2017-12-24T18:19:59.666Z] Time:          Sun Dec 24 2017 13:19:59 GMT-0500 (EST)
+[debug] [2017-12-24T18:19:59.666Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-12-24T18:19:59.676Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-12-24T18:19:59.676Z] > authorizing via signed-in user
+[debug] [2017-12-24T18:19:59.678Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/gnomestock-gstk  
+ Sun Dec 24 2017 13:19:59 GMT-0500 (EST)
+[debug] [2017-12-24T18:20:06.529Z] <<< HTTP RESPONSE 200
+[debug] [2017-12-24T18:20:06.530Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/gnomestock-gstk/tokens  
+ Sun Dec 24 2017 13:20:06 GMT-0500 (EST)
+[debug] [2017-12-24T18:20:11.326Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'gnomestock-gstk'...
+[info] 
+[info] i  deploying database, hosting
+[info] i  database: checking rules syntax...
+[debug] [2017-12-24T18:20:19.619Z] >>> HTTP REQUEST PUT https://gnomestock-gstk.firebaseio.com/.settings/rules.json?dryRun=true {
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null"
+  }
+} 
+ Sun Dec 24 2017 13:20:19 GMT-0500 (EST)
+[debug] [2017-12-24T18:20:26.605Z] <<< HTTP RESPONSE 200
+[info] ✔  database: rules syntax for database gnomestock-gstk is valid
+[info] i  hosting: preparing public directory for upload...
+[debug] [2017-12-24T18:20:26.750Z] >>> HTTP REQUEST PUT https://deploy.firebase.com/v1/hosting/gnomestock-gstk/uploads/-L18kHgmJCzQu7UXUBM1?fileCount=35&message=  
+ Sun Dec 24 2017 13:20:26 GMT-0500 (EST)
+[debug] [2017-12-24T18:21:07.604Z] <<< HTTP RESPONSE 200
+[debug] [2017-12-24T18:21:07.604Z] [hosting] .tgz uploaded successfully, waiting for extraction
