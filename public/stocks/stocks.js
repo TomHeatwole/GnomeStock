@@ -12,6 +12,7 @@ var total;
 var wait = false;
 var prices = {};
 var historyData = {"Tom":{}, "Alex":{}, "Jack":{}, "Mac":{}};
+var comparePageLoaded = false;
 
 firebase.auth().onAuthStateChanged(function(u) {
     if (u) {
@@ -284,6 +285,19 @@ var monthNameLibrary = {
 
 var convertMonthString = function(monthName) {
     return monthNameLibrary[monthName.split(" ")[0]] + "/" + monthName.split(" ")[1].substring(2);
+}
+
+var compare = function() {
+    document.getElementById("compare").style = "display: lol";
+    document.getElementById("links").style = "display: none";
+    if (!comparePageLoaded) {
+        document.getElementById("loading").style = "display: lol";
+        document.getElementById("loaded").style = "display: none";
+        // Populate graph data
+        document.getElementById("loaded").style = "display: lol";
+        document.getElementById("loading").style = "display: none";
+        comparePageLoaded = true;
+    }
 }
 
 $("#mac").hover(function() {

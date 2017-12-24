@@ -39,25 +39,34 @@
             GnomeStock is loding...
         </div>
         <div id="loaded" style="display: none">
-            <h1 style="text-align: left; margin-left: 35%"> Stocks </h1>
-            <div style="text-align: left; margin-left: 35%">
-                <a id="mac" href="https://gnomestocks.com/stocks/mac/">
-                    <img id="mac1" src="../images/mac1.png"/>
-                    <img id="mac2" style="display: none" src="../images/mac2.png"/>
-                </a> 
-                <a id="jack" href="https://gnomestocks.com/stocks/jack/">
-                    <img id="jack1" src="../images/jack1.png"/>
-                    <img id="jack2" style="display: none" src="../images/jack2.png"/>
-                </a> 
-                <br>
-                <a id="tom" href="https://gnomestocks.com/stocks/tom/">
-                    <img id="tom1" src="../images/tom1.png"/>
-                    <img id="tom2" style="display: none" src="../images/tom2.png"/>
-                </a> 
-                <a id="alex" href="https://gnomestocks.com/stocks/alex/">
-                    <img id="alex1" src="../images/alex1.png"/>
-                    <img id="alex2" style="display: none" src="../images/alex2.png"/>
-                </a> 
+            <div id="links">
+                <h1 style="text-align: left; margin-left: 35%"> Stocks </h1>
+                <div style="text-align: left; margin-left: 35%">
+                    <a id="mac" href="https://gnomestocks.com/stocks/mac/">
+                        <img id="mac1" src="../images/mac1.png"/>
+                        <img id="mac2" style="display: none" src="../images/mac2.png"/>
+                    </a> 
+                    <a id="jack" href="https://gnomestocks.com/stocks/jack/">
+                        <img id="jack1" src="../images/jack1.png"/>
+                        <img id="jack2" style="display: none" src="../images/jack2.png"/>
+                    </a> 
+                    <br>
+                    <a id="tom" href="https://gnomestocks.com/stocks/tom/">
+                        <img id="tom1" src="../images/tom1.png"/>
+                        <img id="tom2" style="display: none" src="../images/tom2.png"/>
+                    </a> 
+                    <a id="alex" href="https://gnomestocks.com/stocks/alex/">
+                        <img id="alex1" src="../images/alex1.png"/>
+                        <img id="alex2" style="display: none" src="../images/alex2.png"/>
+                    </a> 
+                </div>
+                <br><br>
+                <div style="margin-left: 35%" class="compareButton" onclick="compare()"> 
+                    <h1 class="compareText">Compare Prices</h1>
+                </div>
+            </div>
+            <div id="compare" style="display: none">
+                TODO: implement compare prices
             </div>
         </div>
     </body>
