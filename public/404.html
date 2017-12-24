@@ -4,6 +4,18 @@
     <link rel="shortcut icon" type="image/x-icon" href="https://gnomestocks.com/favicon.ico" />
     <link rel="stylesheet" href="https://gnomestocks.com/stylesheet.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script> <script>
+    // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyD4dfx-n90fWUgp9Vzw2liN6SZrWfiDqZQ",
+            authDomain: "gnomestock-gstk.firebaseapp.com",
+            databaseURL: "https://gnomestock-gstk.firebaseio.com",
+            projectId: "gnomestock-gstk",
+            storageBucket: "gnomestock-gstk.appspot.com",
+            messagingSenderId: "440727232988"
+        };
+        firebase.initializeApp(config);
+    </script>
     <script src="https://gnomestocks.com/app.js"></script>
         <title>
             GnomeStock 
@@ -24,7 +36,7 @@
         <div style="text-align: center">
             <h1>GnomeStock could not find that URL</h1>
             <br>
-            <img src="https://gnomestocks.com/404.jpg"/>
+            <img src="https://gnomestocks.com/images/404.jpg"/>
         </div>
     </body>
 </html>
