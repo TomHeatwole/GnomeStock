@@ -118,7 +118,7 @@ var populatePortfolio = function() {
         if (userData[i].name === user.displayName) userIndex = i;
         var row = document.createElement("tr");
         var stockName = document.createElement("a");
-        stockName.href = "https://gnomestocks.com/stocks/" + userData[i].name;
+        stockName.href = "https://gnomestocks.com/stocks/" + userData[i].name.toLowerCase();
         stockName.appendChild(document.createTextNode(userData[i].ticker));
         var td1 = document.createElement("td");
         var td2 = document.createElement("td");
