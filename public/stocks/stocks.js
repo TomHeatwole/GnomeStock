@@ -285,3 +285,36 @@ var monthNameLibrary = {
 var convertMonthString = function(monthName) {
     return monthNameLibrary[monthName.split(" ")[0]] + "/" + monthName.split(" ")[1].substring(2);
 }
+
+$("#mac").hover(function() {
+    document.getElementById("mac1").style = "display: none";
+    document.getElementById("mac2").style = "display: lol";
+}, function() {
+    document.getElementById("mac1").style = "display: lol";
+    document.getElementById("mac2").style = "display: none";
+});
+
+$("#tom").hover(function() {
+    document.getElementById("tom1").style = "display: none";
+    document.getElementById("tom2").style = "display: lol";
+}, function() {
+    document.getElementById("tom1").style = "display: lol";
+    document.getElementById("tom2").style = "display: none";
+});
+
+$("#alex").hover(function() {
+    document.getElementById("alex1").style = "display: none";
+    document.getElementById("alex2").style = "display: lol";
+}, function() {
+    document.getElementById("alex1").style = "display: lol";
+    document.getElementById("alex2").style = "display: none";
+});
+
+$("#jack").hover(function() {
+    document.getElementById("jack1").style = "display: none";
+    document.getElementById("jack2").style = "display: lol";
+}, function() {
+    document.getElementById("jack1").style = "display: lol";
+    document.getElementById("jack2").style = "display: none";
+});
+
