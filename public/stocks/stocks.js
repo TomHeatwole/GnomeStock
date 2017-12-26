@@ -240,11 +240,14 @@ var compare = function() {
             c1Data.push(data);
         }
 
+        c1Data[3].color = "#C6458D";
+
         var chart1 = new CanvasJS.Chart("chartContainer1", {
             animationEnabled: true,
             theme: "light2",
             toolTip: {
-                content: "{ticker} - {monthName}: ${dollarString}"  
+                shared: true,
+                content: "{ticker}: ${dollarString}"  
             },
             axisY: {
                 includeZero: false,
