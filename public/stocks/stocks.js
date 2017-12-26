@@ -107,7 +107,7 @@ var populate = function() {
         animationEnabled: true,
         theme: "light2",
         toolTip: {
-            content: "{monthName}: ${dollarString}</rofl>"  
+            content: "{monthName}: ${dollarString}"  
         },
         axisY: {
             includeZero: false,
@@ -127,7 +127,7 @@ var populate = function() {
         animationEnabled: true,
         theme: "light2",
         toolTip: {
-            content: "{monthName}: ${dollarString}</rofl>"  
+            content: "{monthName}: ${dollarString}"  
         },
         axisY: {
             includeZero: false,
@@ -214,39 +214,50 @@ var compare = function() {
     document.getElementById("compare").style = "display: lol";
     document.getElementById("links").style = "display: none";
     if (!comparePageLoaded) {
-        console.log(historyData);
         comparePageLoaded = true;
         var names = ['Tom', 'Alex', 'Jack', 'Mac'];
-
-        /*c2data.push({
-            y : historyData[userOnPage.name][i].total / 100,
-            label: convertMonthString(monthNames[i]),
-            dollarString: dollarString(historyData[userOnPage.name][i].total),
-            monthName: monthNames[i],
-            color: document.getElementsByTagName("lol")[5].style.color
-        });
-    }
-    var count = 0;
-    var chart1 = new CanvasJS.Chart("chartContainer1", {
-        animationEnabled: true,
-        theme: "light2",
-        toolTip: {
-            content: "{monthName}: ${dollarString}</rofl>"  
-        },
-        axisY: {
-            includeZero: false,
-            labelFormatter: function(e) {
-                return "$" + dollarString(Math.round(100 * e.value));
+        var c1Data = [];
+        for (var i = 0; i < names.length; i++) {
+            var name = names[i];
+            var data = {
+                type : "line",
+                name : "$" + name.toUpperCase(),
+                showInLegend: true, 
+                dataPoints : [] 
+            };
+            var history = historyData[name];
+            var j = 0;
+            for (var h in history) {
+                data.dataPoints.push({
+                    y : history[h].price / 100,
+                    label: convertMonthString(monthNames[j]),
+                    dollarString: dollarString(history[h].price),
+                    monthName: monthNames[j],
+                    ticker: "$" + name.toUpperCase()
+                });
+                j++;
             }
-        },
-        axisX: {
-            title: "Month"
-        },
-        data: [{
-            type : "line",
-            dataPoints: c1data
-        }]
-    });*/
+            c1Data.push(data);
+        }
+
+        var chart1 = new CanvasJS.Chart("chartContainer1", {
+            animationEnabled: true,
+            theme: "light2",
+            toolTip: {
+                content: "{ticker} - {monthName}: ${dollarString}"  
+            },
+            axisY: {
+                includeZero: false,
+                labelFormatter: function(e) {
+                    return "$" + dollarString(Math.round(100 * e.value));
+                }
+            },
+            axisX: {
+                title: "Month"
+            },
+            data: c1Data
+        });
+        chart1.render();
     }
 }
 
