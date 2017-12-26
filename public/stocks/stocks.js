@@ -217,30 +217,46 @@ var compare = function() {
         comparePageLoaded = true;
         var names = ['Tom', 'Alex', 'Jack', 'Mac'];
         var c1Data = [];
+        var c2Data = [];
         for (var i = 0; i < names.length; i++) {
             var name = names[i];
-            var data = {
+            var data1 = {
                 type : "line",
                 name : "$" + name.toUpperCase(),
+                showInLegend: true, 
+                dataPoints : [] 
+            };
+            var data2 = {
+                type : "line",
+                name : name,
                 showInLegend: true, 
                 dataPoints : [] 
             };
             var history = historyData[name];
             var j = 0;
             for (var h in history) {
-                data.dataPoints.push({
+                data1.dataPoints.push({
                     y : history[h].price / 100,
                     label: convertMonthString(monthNames[j]),
                     dollarString: dollarString(history[h].price),
                     monthName: monthNames[j],
                     ticker: "$" + name.toUpperCase()
                 });
+                data2.dataPoints.push({
+                    y : history[h].total / 100,
+                    label: convertMonthString(monthNames[j]),
+                    dollarString: dollarString(history[h].total),
+                    monthName: monthNames[j],
+                    name: name
+                });
                 j++;
             }
-            c1Data.push(data);
+            c1Data.push(data1);
+            c2Data.push(data2);
         }
 
         c1Data[3].color = "#C6458D";
+        c2Data[3].color = "#C6458D";
 
         var chart1 = new CanvasJS.Chart("chartContainer1", {
             animationEnabled: true,
@@ -260,7 +276,26 @@ var compare = function() {
             },
             data: c1Data
         });
+        var chart2 = new CanvasJS.Chart("chartContainer2", {
+            animationEnabled: true,
+            theme: "light2",
+            toolTip: {
+                shared: true,
+                content: "{name}: ${dollarString}"  
+            },
+            axisY: {
+                includeZero: false,
+                labelFormatter: function(e) {
+                    return "$" + dollarString(Math.round(100 * e.value));
+                }
+            },
+            axisX: {
+                title: "Month"
+            },
+            data: c2Data
+        });
         chart1.render();
+        chart2.render();
     }
 }
 
