@@ -210,6 +210,46 @@ var populate = function() {
     }
 }
 
+var compare = function() {
+    document.getElementById("compare").style = "display: lol";
+    document.getElementById("links").style = "display: none";
+    if (!comparePageLoaded) {
+        console.log(historyData);
+        comparePageLoaded = true;
+        var names = ['Tom', 'Alex', 'Jack', 'Mac'];
+
+        /*c2data.push({
+            y : historyData[userOnPage.name][i].total / 100,
+            label: convertMonthString(monthNames[i]),
+            dollarString: dollarString(historyData[userOnPage.name][i].total),
+            monthName: monthNames[i],
+            color: document.getElementsByTagName("lol")[5].style.color
+        });
+    }
+    var count = 0;
+    var chart1 = new CanvasJS.Chart("chartContainer1", {
+        animationEnabled: true,
+        theme: "light2",
+        toolTip: {
+            content: "{monthName}: ${dollarString}</rofl>"  
+        },
+        axisY: {
+            includeZero: false,
+            labelFormatter: function(e) {
+                return "$" + dollarString(Math.round(100 * e.value));
+            }
+        },
+        axisX: {
+            title: "Month"
+        },
+        data: [{
+            type : "line",
+            dataPoints: c1data
+        }]
+    });*/
+    }
+}
+
 var displayLoadedPage = function() {
     document.getElementById("loading").style = "display: none";
     document.getElementById("loaded").style = "display: lol";
@@ -285,19 +325,6 @@ var monthNameLibrary = {
 
 var convertMonthString = function(monthName) {
     return monthNameLibrary[monthName.split(" ")[0]] + "/" + monthName.split(" ")[1].substring(2);
-}
-
-var compare = function() {
-    document.getElementById("compare").style = "display: lol";
-    document.getElementById("links").style = "display: none";
-    if (!comparePageLoaded) {
-        document.getElementById("loading").style = "display: lol";
-        document.getElementById("loaded").style = "display: none";
-        // Populate graph data
-        document.getElementById("loaded").style = "display: lol";
-        document.getElementById("loading").style = "display: none";
-        comparePageLoaded = true;
-    }
 }
 
 $("#mac").hover(function() {
