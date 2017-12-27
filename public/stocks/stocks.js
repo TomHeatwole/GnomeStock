@@ -75,6 +75,11 @@ var getDataAndValidate = function() {
     });
 }
 
+var back = function() {
+    document.getElementById("links").style = "display: lol";
+    document.getElementById("compare").style = "display: none";
+}
+
 var populate = function() {
     if (monthly) monthIndex--;
     var lols = document.getElementsByTagName("lol");
