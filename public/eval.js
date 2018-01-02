@@ -12,6 +12,7 @@ var monthString;
 var wekString;
 var wait = false;
 var safari = true;
+var started = false;
 
 // Logic for /monthly and /weekly. /daily is in daily/daily.js
 
@@ -29,6 +30,8 @@ $(document).ready(function() {
 });
 
 var start = function(u) {
+    if (started) return;
+    else started = true;
     u = firebase.auth().currentUser;
     if (u) {
         user = u;
