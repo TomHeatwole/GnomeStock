@@ -8,6 +8,7 @@ var shares;
 var bp;
 var safari = true;
 var loggedInUser;
+var thisUserTotal;
 var started = false;
 
 firebase.auth().onAuthStateChanged(function(u) {
@@ -56,6 +57,7 @@ var getMasterValues = function() {
                     if (usr.val().name === user.displayName) {
                         shares = usr.val().shares;
                         bp = usr.val().bp;
+                        thisUserTotal = usr.val().total;
                     }
                     count++;
                     var data = {
@@ -170,7 +172,7 @@ var populatePortfolio = function() {
     var totalTd3 = document.createElement("td");
     totalTd1.appendChild(document.createTextNode("Total"));
     //totalTd2.appendChild(document.createTextNode(totalShares));
-    totalTd3.appendChild(document.createTextNode("$" + dollarString(userData[userIndex].total)));
+    totalTd3.appendChild(document.createTextNode("$" + dollarString(thisUserTotal)));
     totalRow.appendChild(totalTd1);
     totalRow.appendChild(totalTd2);
     totalRow.appendChild(totalTd3);
