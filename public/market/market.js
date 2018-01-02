@@ -42,6 +42,12 @@ var getHistory = function() {
 
 var getDataAndValidate = function() {
     firebase.database().ref("master").once("value").then(function(master) {
+        for (var n in master.val().monthNames) (function(n) {
+            firebase.database().ref("master/monthNames/" + n).once("value").then(function(mn) {
+                if (mn.val().month === monthIndex + 1)
+                    document.getElementsByTagName("Master")[3].innerHTML = mn.val().name;
+            });
+        })(n);
         weekIndex = master.val().week;
         monthIndex = master.val().month;
         if (master.val().weekly)
@@ -50,7 +56,6 @@ var getDataAndValidate = function() {
             document.getElementById("monthly").style = "display: lol";
         if (master.val().market)
             document.getElementById("market").style = "display: lol";
-        document.getElementsByTagName("Master")[3].innerHTML = monthIndex;
     });
     firebase.database().ref("user/").once('value').then(function(users) {
         var count = 0;
