@@ -41,7 +41,7 @@ var start = function(u) {
             start(u);
         });
     } else {
-        //window.location = "https://gnomestocks.com/auth/";  
+        window.location = "https://gnomestocks.com/auth/";  
     }
 }
 
@@ -129,9 +129,10 @@ var gdavp2 = function(weekTemplate) {
                                 count--;
                                 (function(w, count, length) {
                                     firebase.database().ref("user/" + u + "/weekly/" + w).once("value").then(function(i) {
-                                        if (i.val().week >= wLow && i.val().week <= wHigh)
+                                        if (i.val().week >= wLow && i.val().week <= wHigh) {
                                             weekRatings += "<br>Week: " + (i.val().week - wLow + 1) + ": " + i.val().rating;
                                             weekAverage += i.val().rating;
+                                        }
                                         if (count == 0) {
                                             document.getElementById("weekRatings").innerHTML = "For reference, here are the weekly ratings you have self-reported this month: <b>"
                                                 + weekRatings + "</b>";
