@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico" />
+    <link rel="stylesheet" href="../stylesheet.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script> <script>
+    // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyD4dfx-n90fWUgp9Vzw2liN6SZrWfiDqZQ",
+            authDomain: "gnomestock-gstk.firebaseapp.com",
+            databaseURL: "https://gnomestock-gstk.firebaseio.com",
+            projectId: "gnomestock-gstk",
+            storageBucket: "gnomestock-gstk.appspot.com",
+            messagingSenderId: "440727232988"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+        <title>
+            GnomeStock 
+        </title>
+    </head>
+    <body>
+        <ul>
+            <li>
+                <a href="https://gnomestocks.com/">
+                    <i class="fa fa-home"></i> &nbsp; Home
+                </a>
+            </li>
+            <li>
+                <a id="stocks" href="https://gnomestocks.com/stocks">
+                    <i class="fa fa-line-chart"></i> &nbsp; Stocks
+                </a>
+            </li>
+            <li>
+                <a style="display: none" id="market" href="https://gnomestocks.com/market">
+                    <i class="fa fa-shopping-cart"></i> &nbsp; Market
+                </a>
+            </li>
+            <li>
+                <a id="daily" href="https://gnomestocks.com/daily">
+                    <i class="fa fa-calendar-plus-o"></i> &nbsp; Daily Evaluation
+                </a>
+            </li>
+            <li>
+                <a style="display: none" id="weekly" href="https://gnomestocks.com/weekly">
+                    <i class="fa fa-calendar-check-o"></i> &nbsp; Weekly Evaluation
+                </a>
+            </li>
+            <li>
+                <a style="display: none" id="monthly" href="https://gnomestocks.com/monthly">
+                    <i class="fa fa-calendar"></i> &nbsp; Monthly Evaluation
+                </a>
+            </li>
+            <li>
+                <a href="https://gnomestocks.com/rules">
+                    <i class="fa fa-book"></i> &nbsp; Rules
+                </a>
+            </li>
+            <li>
+                <a href="https://gnomestocks.com/auth/changepassword.html">
+                    <i class="fa fa-key"></i> &nbsp; Change Password
+                </a>
+            </li>
+            <li>
+                <a class="active" href="https://gnomestocks.com/mobile">
+                    <i class="fa fa-mobile"></i> &nbsp; Mobile
+                </a>
+            </li>
+            <li>
+                <a onclick="signOut()">
+                    <i class="fa fa-sign-out"></i> &nbsp; Sign Out
+                </a>
+            </li>
+        </ul>
+        <img id="loading" src="../images/loading.png"/>
+        <div id="loaded" style="display: none; text-align: center">
+            <h1 id="hello" style="margin-left: 35%; text-align: left">GnomeStock Mobile Evaluation Page</h1><br>
+        </div>
+    </body>
+    <script src="./mobile.js"></script>
+</html>
