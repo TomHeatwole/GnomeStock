@@ -38,6 +38,11 @@ var getHistory = function() {
                         firebase.database().ref("user/" + u + "/history/" + h).once("value").then(function(i) {
                             historyData[usr.val().name][i.val().month] = i.val();
                         });
+                        if (market) historyData[usr.val().name][monthIndex] = {
+                            month: monthIndex,
+                            price: usr.val().price,
+                            total: usr.val().total
+                        };
                     })(h);
                     if (count === 4) getDataAndValidate();
                 });
@@ -91,7 +96,8 @@ var populate = function() {
     lols[4].innerHTML = userOnPage.name + "'s Portfolio Value";
     lols[6].innerHTML = "$" + dollarString(userOnPage.total);
     populateChangeString(historyData[userOnPage.name][monthIndex - 1].total, userOnPage.total, lols[7], lols[5]);
-    for (var i = 0; i <= monthIndex; i++) { //TODO: Make this start at 1 
+    if (market) monthIndex--;
+    for (var i = 1; i <= monthIndex; i++) {
         c1data.push({
             y : historyData[userOnPage.name][i].price / 100,
             label: convertMonthString(monthNames[i]),
@@ -104,6 +110,22 @@ var populate = function() {
             label: convertMonthString(monthNames[i]),
             dollarString: dollarString(historyData[userOnPage.name][i].total),
             monthName: monthNames[i],
+            color: document.getElementsByTagName("lol")[5].style.color
+        });
+    }
+    if (market) {
+        c1data.push({
+            y : userOnPage.price / 100,
+            label: convertMonthString(monthNames[monthIndex + 1]),
+            dollarString: dollarString(userOnPage.price),
+            monthName: monthNames[monthIndex + 1],
+            color: document.getElementsByTagName("lol")[1].style.color,
+        });
+        c2data.push({
+            y : userOnPage.total / 100,
+            label: convertMonthString(monthNames[monthIndex + 1]),
+            dollarString: dollarString(userOnPage.total),
+            monthName: monthNames[monthIndex + 1],
             color: document.getElementsByTagName("lol")[5].style.color
         });
     }
@@ -155,6 +177,11 @@ var populate = function() {
     var t = userOnPage.shares.Tom;
     var a = userOnPage.shares.Alex;
     var j = userOnPage.shares.Jack;
+    m -= userOnPage.changes.Mac;
+    t -= userOnPage.changes.Tom;
+    a -= userOnPage.changes.Alex;
+    j -= userOnPage.changes.Jack;
+    console.log(t);
     for (var i = monthIndex; i >= 0; i--) {
         var changes = historyData[userOnPage.name][i].changes;
         var row = document.createElement("tr");
@@ -171,7 +198,7 @@ var populate = function() {
                          + "$ALEX: " + a + "<br>"
                          + "$JACK: " + j + "<br>"
         }
-        else if (i === monthIndex && userOnPage.name !== loggedInUser.name) {
+        else if (i === monthIndex && userOnPage.name !== loggedInUser.name && !market) {
             d2.innerHTML = "Hidden until end of month";
             d3.innerHTML = "Hidden until end of month";
             d2.style = "font-style: italic";
@@ -200,9 +227,14 @@ var populate = function() {
         var amount = document.createTextNode(" $" + dollarString(historyData[userOnPage.name][i].total) + " ");
         var change = document.createElement("rofl");
         var previous = (i === 0) ? 10000 : historyData[userOnPage.name][i].total;
-        if (i === monthIndex) d4.innerHTML = "TBD";
+        if (i === monthIndex && !market) d4.innerHTML = "TBD";
         else {
-            populateChangeString(previous, historyData[userOnPage.name][i + 1].total, change, arrow);
+            if (market && i === monthIndex) {
+                populateChangeString(previous, userOnPage.total, change, arrow);
+                amount = document.createTextNode(" $" + dollarString(userOnPage.total) + " ");
+            }
+            else
+                populateChangeString(previous, historyData[userOnPage.name][i + 1].total, change, arrow);
             d4.appendChild(arrow);
             d4.appendChild(amount);
             d4.appendChild(change);
@@ -240,6 +272,10 @@ var compare = function() {
             var history = historyData[name];
             var j = 0;
             for (var h in history) {
+                if (j == 0) {
+                    j++;
+                    continue
+                }
                 data1.dataPoints.push({
                     y : history[h].price / 100,
                     label: convertMonthString(monthNames[j]),
