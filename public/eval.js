@@ -16,10 +16,10 @@ var safari = true;
 // Logic for /monthly and /weekly. /daily is in daily/daily.js
 
 
-//firebase.auth().onAuthStateChanged(function(u) {
-//   safari = false; 
-//   start(u);
-//});
+firebase.auth().onAuthStateChanged(function(u) {
+   safari = false; 
+   start(u);
+});
 
 $(document).ready(function() {
     var loggedInUser = firebase.auth().currentUser;

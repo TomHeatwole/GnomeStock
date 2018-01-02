@@ -6,8 +6,21 @@ var userData;
 var masterData;
 var shares;
 var bp;
+var safari = true;
 
 firebase.auth().onAuthStateChanged(function(u) {
+    safari = false;
+    start(u);
+});
+
+$(document).ready(function() {
+    var loggedInUser = firebase.auth().currentUser;
+    setTimeout(function() {
+        if (safari) start(loggedInUser);
+    }, 5000);
+});
+
+start = function(u) {
     if (u) {
         user = u;
         if (document.getElementsByTagName("h1")[0].innerHTML.charAt(0) === 'H') {
@@ -17,7 +30,7 @@ firebase.auth().onAuthStateChanged(function(u) {
     } else {
         window.location = "https://gnomestocks.com/auth/";  
     }
-});
+}
 
 var getMasterValues = function() {
     firebase.database().ref("master").once("value").then(function(master) {
