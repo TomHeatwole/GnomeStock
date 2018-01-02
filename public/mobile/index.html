@@ -77,7 +77,22 @@
         </ul>
         <img id="loading" src="../images/loading.png"/>
         <div id="loaded" style="display: none; text-align: center">
-            <h1 id="hello" style="margin-left: 35%; text-align: left">GnomeStock Mobile Evaluation Page</h1><br>
+            <h1 style="margin-left: 35%; text-align: left">GnomeStock Mobile Evaluation Page</h1><br>
+            <div id="dailyForm" style="display: none">
+                <div style="margin-left: 35%; text-align: left">
+                    <h2 id="header">Daily Evaluation</h2>
+                    <br>
+                    Enter your pin: <input id="dailyPin" type="text"/>
+                    <p> How did you feel today 0-100 (uniform distribution). Remember to consider the whole day and not just how you're currently doing. </p>
+                    <input id="dailyRating" type="number"/>
+                    <br><button onclick="submitDaily()">Submit</button>
+                </div>
+            </div>
+            <div id="weeklyForm" style="display: none">
+            </div>
+            <div id="monthlyForm" style="display: none">
+            </div>
+            <br><p id="error" style="display:none">Try again idiot</p>
         </div>
     </body>
     <script src="./mobile.js"></script>
