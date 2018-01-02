@@ -7,26 +7,29 @@ var masterData;
 var shares;
 var bp;
 var safari = true;
+var loggedInUser;
+var started = false;
 
 firebase.auth().onAuthStateChanged(function(u) {
-    safari = false;
-    start(u);
+   safari = false; 
+   start(u);
 });
 
 $(document).ready(function() {
-    var loggedInUser = firebase.auth().currentUser;
+    loggedInUser = firebase.auth().currentUser;
     setTimeout(function() {
         if (safari) start(loggedInUser);
     }, 5000);
 });
 
 start = function(u) {
+    if (started) return;
+    started = true;
     if (u) {
         user = u;
-        if (document.getElementsByTagName("h1")[0].innerHTML.charAt(0) === 'H') {
+        if (document.getElementsByTagName("h1")[0].innerHTML.charAt(0) === 'H')
             $("h1").text("Hello, " + u.displayName + "!");
-            getMasterValues();
-        }
+        getMasterValues();
     } else {
         window.location = "https://gnomestocks.com/auth/";  
     }
