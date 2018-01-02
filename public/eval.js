@@ -1,4 +1,5 @@
 var user;
+var u;
 var userKey;
 var name;
 var weekIndex;
@@ -10,10 +11,25 @@ var weekAverage = 0;
 var monthString;
 var wekString;
 var wait = false;
+var safari = true;
 
 // Logic for /monthly and /weekly. /daily is in daily/daily.js
 
-firebase.auth().onAuthStateChanged(function(u) {
+
+//firebase.auth().onAuthStateChanged(function(u) {
+//   safari = false; 
+//   start(u);
+//});
+
+$(document).ready(function() {
+    var loggedInUser = firebase.auth().currentUser;
+    setTimeout(function() {
+        if (safari) start(loggedInUser);
+    }, 5000);
+});
+
+var start = function(u) {
+    u = firebase.auth().currentUser;
     if (u) {
         user = u;
         var loc = window.location.href;
@@ -25,9 +41,9 @@ firebase.auth().onAuthStateChanged(function(u) {
             start(u);
         });
     } else {
-        window.location = "https://gnomestocks.com/auth/";  
+        //window.location = "https://gnomestocks.com/auth/";  
     }
-});
+}
 
 var getDataAndValidate = function(weekTemplate) {
     firebase.database().ref("master").once("value").then(function(master) {
@@ -141,10 +157,6 @@ var signOut = function() {
 var displayLoadedPage = function() {
     document.getElementById("loading").style = "display: none";
     document.getElementById("loaded").style = "display: lol";
-}
-
-var start = function(user) {
-
 }
 
 var home = function() {
