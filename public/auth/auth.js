@@ -68,6 +68,9 @@ firebase.auth().onAuthStateChanged(function(u) {
             if (master.val().market)
                 document.getElementById("market").style = "display: lol";
     });
+});
+
+$("document").ready(function() {
     displayLoadedPage();
 });
 

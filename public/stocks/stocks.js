@@ -274,8 +274,9 @@ var compare = function() {
             for (var h in history) {
                 if (j == 0) {
                     j++;
-                    continue
+                    continue;
                 }
+                if (j == monthIndex + 1) break;
                 data1.dataPoints.push({
                     y : history[h].price / 100,
                     label: convertMonthString(monthNames[j]),
